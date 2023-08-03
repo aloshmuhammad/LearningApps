@@ -1,0 +1,31 @@
+.Container{
+    display:flex;
+    justify-items: center;
+}
+@media (max-width: 768px) {
+    /* 
+      This code will be applied to the page when the screen is reduced in size.
+    */
+    
+    /* 
+      Change the font size on the page.
+    */
+    body {
+      font-size: 14px;
+    }
+    
+    /* 
+      Change the layout of the page.
+    */
+    .Container {
+      width: 100%;
+    }
+    
+    /* 
+      Change the size of the images on the page.
+    */
+    .img {
+      width: 100%;
+      height: auto;
+    }
+}

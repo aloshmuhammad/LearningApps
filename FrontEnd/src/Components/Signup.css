@@ -1,0 +1,91 @@
+/* Global Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+}
+
+/* Page Styles */
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Text {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 24px;
+}
+
+.login-paper {
+  padding: 1rem;
+  max-width: 400px;
+  width: 100%;
+}
+
+.login-image {
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+  margin-top: 2rem;
+}
+
+.TextN {
+  width: 100%;
+  height: 40px;
+  font-size: 14px;
+  margin-bottom: 0.5rem;
+}
+
+.Btn {
+  background-color: #f50057;
+  color: #fff;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  padding: 8px 16px;
+}
+
+.Btn:hover {
+  background-color: #c51162;
+}
+
+.btnbtn {
+  margin-top: 1rem;
+  background-color: #4285f4;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.btnbtn:hover {
+  background-color: #3367d6;
+}
+
+.grid-Text {
+  margin-top: -9px;
+}
+
+/* Responsive Styles */
+@media (max-width: 480px) {
+  .Text {
+    font-size: 20px;
+  }
+
+  .TextN {
+    font-size: 12px;
+  }
+
+  .Btn,
+  .btnbtn {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .login-paper {
+    padding: 1rem;
+    max-width: 300px;
+  }
+}

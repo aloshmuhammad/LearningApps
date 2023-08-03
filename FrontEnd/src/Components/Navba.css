@@ -1,0 +1,38 @@
+body{
+    background-color: black;
+}
+.Text{
+    color:azure;
+    margin-top: 100px;
+}
+.Images{
+  width:100%;  
+  margin-top: 100px
+}
+@media (max-width: 768px) {
+    /* 
+      This code will be applied to the page when the screen is reduced in size.
+    */
+    
+    /* 
+      Change the font size on the page.
+    */
+    body {
+      font-size: 14px;
+    }
+    
+    /* 
+      Change the layout of the page.
+    */
+    .container {
+      width: 100%;
+    }
+    
+    /* 
+      Change the size of the images on the page.
+    */
+    .img {
+      width: 100%;
+      height: auto;
+    }
+}

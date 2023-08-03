@@ -1,0 +1,58 @@
+
+body{
+    background-color: black;
+}
+.login-paper {
+    padding: 2rem;
+    background-color: white;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .login-paper .TextN,
+  .login-paper .Btn,
+  .login-paper a {
+    width: 100%;
+  }
+  
+  .login-paper a {
+    display: block;
+    text-align: center;
+  }
+  
+  .login-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  @media (min-width: 769px) {
+    .login-container {
+      display: flex;
+      align-items: center;
+    }
+  
+    .login-image {
+      max-width: 50%;
+    }
+  
+    .login-paper {
+      margin-left: 2rem;
+    }
+  }
+  .login-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  @media (min-width: 768px) {
+    .login-image {
+      width: auto;
+      max-height: 100%;
+    }
+  }
+  .btnbtn:hover{
+   background-color: blue;
+  }
+  
+  
+  

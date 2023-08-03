@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es6",                // or the target version you prefer
+    "module": "commonjs",           // or the module system you are using
+    "outDir": "./build",            // specify the output directory for JavaScript files
+    "rootDir": "./src",             // specify the root directory for TypeScript files
+    "strict": true,                 // enable strict type-checking if desired
+    "esModuleInterop": true,        // enable interop between CommonJS and ES modules
+    "resolveJsonModule": true ,
+    "types": ["node", "nodemailer"]
+                                    
+  },
+  "include": ["src/**/*.ts"],
+  
+  "exclude": ["node_modules"]
+ 
+}

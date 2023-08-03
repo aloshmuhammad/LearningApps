@@ -1,0 +1,57 @@
+body{
+    background-color: white;
+}
+.accentBackground {
+    background-color: #2c3e50;
+  }
+  
+  .textWhite {
+    color: white;
+  }
+  
+  .textGray {
+    color: #777777;
+  }
+  
+  .footerContainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 16px; /* Adjust the padding as needed */
+    background-color: #f50057; /* Replace with your desired background color */
+    color: #fff; /* Replace with your desired text color */
+    height: 200px;
+  }
+  
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .description {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .resourcesTitle {
+    font-size: 18px;
+    margin-left: 10px;
+  }
+  
+  .resourcesList {
+    margin-top: 5px;
+    padding-left: 0;
+  }
+  
+  .resourcesItem {
+    margin-bottom: 5px;
+  }
+  
+  .footerRights {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
