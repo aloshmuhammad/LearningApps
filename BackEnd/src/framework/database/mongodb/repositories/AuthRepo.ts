@@ -8,34 +8,54 @@ import { UserEntity } from "../../../../entity/user";
 import Order from "../model/orderSchema";
 export const userRepositoryMongo=()=>{
     const findbyEmail=async(email:string)=>{
-    const user:UserInterface | null =await User.findOne({email})
-    return user
+      try{
+        const user:UserInterface | null =await User.findOne({email})
+        return user
+      }catch(error:any){
+        throw new Error('Error Occured During Finding The User Already Exist')
+    }
+   
     
     }
     const addUser = async (user:UserEntity) => {
-      const newUser={
-        firstName:user?.getFirstName(),
-        lastName:user?.getLastName(),
-        phoneNo:user?.getPhoneNumber(),
-        email:user?.getEmail(),
-        password:user?.getPassword()
-      }
-      console.log(newUser,'ff')
-
-        return await User.create(newUser)
+      try{
+        const newUser={
+          firstName:user?.getFirstName(),
+          lastName:user?.getLastName(),
+          phoneNo:user?.getPhoneNumber(),
+          email:user?.getEmail(),
+          password:user?.getPassword()
+        }
+        console.log(newUser,'ff')
+  
+          return await User.create(newUser)
+      }catch(error:any){
+        throw new Error('Error Occured During Adding New User To the Database')
+    }
+     
       }
       const addUserG=async(userG:{
          email:string,
          firstName:string,
          imageUrl:string
       })=>{
-        return await User.create(userG)
+        try{
+          return await User.create(userG)
+        }catch(error:any){
+          throw new Error('Error Occured During Adding New User Through Google')
+      }
+        
       }
      const phoneNumberVerify=async(phone:{phoneNumber:string})=>{
-      console.log(phone.phoneNumber)
-           const user:UserInterface | null=await User.findOne({phoneNo:phone.phoneNumber})
-           console.log(user,'ppp')
-           return user
+      try{
+        console.log(phone.phoneNumber)
+        const user:UserInterface | null=await User.findOne({phoneNo:phone.phoneNumber})
+        console.log(user,'ppp')
+        return user
+      }catch(error:any){
+        throw new Error('Error Occured During Verifying The Phone No')
+    }
+     
      }
       
      const getCourses=async()=>{
@@ -44,8 +64,13 @@ export const userRepositoryMongo=()=>{
       return course
      }
      const getCourse=async(courseId:string)=>{
-      const course : CourseInterface | null=await Course.findById(courseId)
-      return course
+      try{
+        const course : CourseInterface | null=await Course.findById(courseId)
+        return course
+      }catch(err:any){
+        throw new Error('Error occured during Fetching The Course')
+      }
+      
      }
      const orderSet=async(details:{courses:string,user:string,price:number,status:boolean})=>{
       const newOrder={

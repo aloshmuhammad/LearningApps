@@ -5,10 +5,17 @@ import Tutor from "../model/tutorSchema";
 import TutorApplyS from "../model/tutorapplySchem";
 import { AppliedTutorEntity } from "../../../../entity/appliedtutor";
 export const tutorrepoimpl=()=>{
-    const findbyEmailTutor=async(email:string)=>{
-        const tutor:TutorInterface | null = await Tutor.findOne({email})
-           return tutor
+   
+        const findbyEmailTutor=async(email:string)=>{
+            try{
+                const tutor:TutorInterface | null = await Tutor.findOne({email})
+                return tutor
+            }catch(err:any){
+        throw new Error('Error Occured During Tutor Login')
     }
+}
+    
+  
     const addTutorApply=async(tutor:AppliedTutorEntity)=>{
         const newApplied={
             name:tutor.getName(),

@@ -7,21 +7,27 @@ import { AppliedTutorEntity } from "../../../entity/appliedtutor";
 
 
 export const tutorLogin=async(tutor:{email:string,password:string},repositories:ReturnType<Tutorrepointer>,services:ReturnType<AuthInterface>)=>{
+    try{
+        const Isemailexist=await repositories.findbyEmailTutor(tutor.email)
+        console.log(Isemailexist,'oop')
+        if(!Isemailexist)return {notTutor:true}
+        if(Isemailexist.status)return {Blocked:true}
+        const ttrPassword=Isemailexist.password
+        if(tutor.password==ttrPassword){
+            const  tutor=Isemailexist
+            const token= await services.generateToken(Isemailexist._id.toString())
+            console.log(token,'lok')
+            return {token,tutor,status:true}
+        }
+        else{
+            return {status:false}
+        }
+    }catch(error:any){
+      throw error
+    }
+    
       
-    const Isemailexist=await repositories.findbyEmailTutor(tutor.email)
-    console.log(Isemailexist,'oop')
-    if(!Isemailexist)return {notTutor:true}
-    if(Isemailexist.status)return {Blocked:true}
-    const ttrPassword=Isemailexist.password
-    if(tutor.password==ttrPassword){
-        const  tutor=Isemailexist
-        const token= await services.generateToken(Isemailexist._id.toString())
-        console.log(token,'lok')
-        return {token,tutor,status:true}
-    }
-    else{
-        return {status:false}
-    }
+   
 
 }
 export const tutorForm=async(tutor:{name:string,email:string,address:string,age:string,highestqualification:string,coverletter:string,resumeurl:string,course:string},repositories:ReturnType<Tutorrepointer>)=>{

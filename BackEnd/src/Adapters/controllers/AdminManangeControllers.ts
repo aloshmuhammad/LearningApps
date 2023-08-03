@@ -41,28 +41,54 @@ const AdminManageController=(adminrepoImplement:AdminRepoImpl,adminrepoInter:Adm
     })
    
     const tutorsList=asyncHandler(async(req:Request,res:Response)=>{
-        const ListTutor=await fullTutors(adminMange)
-        console.log(ListTutor,'mk')
-        res.json(ListTutor)
+        try{
+            const ListTutor=await fullTutors(adminMange)
+            console.log(ListTutor,'mk')
+            res.json(ListTutor)
+        }catch(error:any){
+          
+            res.status(500).json({ message: "An error occurred", error: error.message });
+        }
+        
     })
     const tutorBlock=asyncHandler(async(req:Request,res:Response)=>{
         console.log(req.body,'kook')
-        const tutor:{userId:string,status:boolean}=req.body
-        await tutorsBLock(tutor,adminMange)
-        res.json({status:true})
+        try{
+            const tutor:{userId:string,status:boolean}=req.body
+            await tutorsBLock(tutor,adminMange)
+            res.json({status:true})
+        }catch(error:any){
+          
+            res.status(500).json({ message: "An error occurred", error: error.message });
+        }
+        
     })
     const courseList=asyncHandler(async(req:Request,res:Response)=>{
-           const listCourse=await listCourses(adminMange)
-           res.json(listCourse)
+        try{
+            const listCourse=await listCourses(adminMange)
+            res.json(listCourse)
+        }catch(error:any){
+          
+            res.status(500).json({ message: "An error occurred", error: error.message });
+        }
+
+          
     })
     const appliedTutorList=asyncHandler(async(req:Request,res:Response)=>{
-               const AppliedTutors=await listAppliedTutors(adminMange)
-               res.json(AppliedTutors)
+        try{
+            const AppliedTutors=await listAppliedTutors(adminMange)
+            res.json(AppliedTutors)
+        }catch(error:any){
+          
+            res.status(500).json({ message: "An error occurred", error: error.message });
+        }
+               
     })
     const recruitTutor=asyncHandler(async(req:Request,res:Response)=>{
         console.log(req.body,'oo')
-        const {email}=req.body
-        
+        try{
+            const {email}=req.body
+ 
             const password=Math.random().toString(36).slice(2, 10)
           
         
@@ -83,16 +109,35 @@ const AdminManageController=(adminrepoImplement:AdminRepoImpl,adminrepoInter:Adm
            const admitDone=await admitProcess(adminMange,admittedTutor)
            const appliedStatus=await statusApplied(adminMange,req.body._id)
            res.json(admitDone)
+        }catch(error:any){
+          
+            res.status(500).json({ message: "An error occurred", error: error.message });
+        }
+               
+        
+       
     })
     const addCourse=asyncHandler(async(req:Request,res:Response)=>{
-        const course:{title:string,Description:string,price:number}=req.body
-          const AddCourse=await courseAdd(adminMange,course)
-          res.json({status:true,AddCourse})
+        try{
+            const course:{title:string,Description:string,price:number}=req.body
+            const AddCourse=await courseAdd(adminMange,course)
+            res.json({status:true,AddCourse})
+        }catch(error:any){
+          
+            res.status(500).json({ message: "An error occurred", error: error.message });
+        }
+    
     })
     const getCourses=asyncHandler(async(req:Request,res:Response)=>{
-         const buyCourses=await getBcourse(adminMange)
+        try{
+            const buyCourses=await getBcourse(adminMange)
          console.log(buyCourses,'po')
-         res.json({code:200 , buyCourses})
+         res.json({code:200 , buyCourses}) 
+        }catch(error:any){
+          
+            res.status(500).json({ message: "An error occurred", error: error.message });
+        }
+        
     })
     return{userList,userBlock,tutorsList,tutorBlock,courseList,appliedTutorList,recruitTutor,addCourse,getCourses}
 }

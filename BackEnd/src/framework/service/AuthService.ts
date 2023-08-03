@@ -3,20 +3,37 @@ import  jwt  from 'jsonwebtoken'
 import configKeys from '../../configkeys'
 
 export const authService=()=>{
+  
     const bcryptPassword=async(password:string)=>{
-        const salt = await bcrypt.genSalt(10)
-        password=await bcrypt.hash(password, salt)
-        return password
+        try{
+            const salt = await bcrypt.genSalt(10)
+            password=await bcrypt.hash(password, salt)
+            return password
+        }catch(error:any){
+            throw new Error('Error Occured During Hashing The Password')
+        }
+        
     }
     const generateToken=async(Id:string)=>{
-          const token=jwt.sign({Id},configKeys.Jwt_Secret, {
-            expiresIn: "5d",
-        })
-        return token
+        try{
+            const token=jwt.sign({Id},configKeys.Jwt_Secret, {
+                expiresIn: "5d",
+            })
+            return token
+        }catch(error:any){
+            throw new Error('Error Occured During Generating the Token')
+        }
+        
+       
     }
     
     const comparePassword=(password:string,hashedPassword:string)=>{
-        return bcrypt.compare(password,hashedPassword)
+        try{
+            return bcrypt.compare(password,hashedPassword)
+        }catch(error:any){
+            throw new Error('Error Occured During Comparing The Password')
+        }
+        
      }
      const verifyToken=async(token:string)=>{
         const secret=configKeys.Jwt_Secret

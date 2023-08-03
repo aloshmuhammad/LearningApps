@@ -41,8 +41,8 @@ const Authserv=authServiceInterface(authServiceImpl())
 const AuthadDb=adminRepoInter(adminRepoImpl())
 const AuthtutorDb=tutorrepointer(tutorrepimpl())
 const registerUser=asyncHandler(async(req:Request,res:Response)=>{
-    
-console.log(req.body);
+    try{
+        console.log(req.body);
 const user:{firstName:string,lastName:string,phoneNo:string,email:string,password:string,confirmPassword:string}=req.body
 
  const userToken= await userSignup(user,Authdb,Authserv)
@@ -54,58 +54,114 @@ const user:{firstName:string,lastName:string,phoneNo:string,email:string,passwor
                           })
 
     
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+    
+
 
 })
 const googlesignup=asyncHandler(async(req:Request,res:Response)=>{
-  const userG:{email:string,firstName:string,imageUrl:string}=req.body
-  const userGoogle=await userGgle(userG,Authdb,Authserv)
-  console.log(userGoogle,'ggleey')
-  res.json({status:'success',
-  message:'new user registered',
-  userGoogle
-                 })
+    try{
+        const userG:{email:string,firstName:string,imageUrl:string}=req.body
+        const userGoogle=await userGgle(userG,Authdb,Authserv)
+        console.log(userGoogle,'ggleey')
+        res.json({status:'success',
+        message:'new user registered',
+        userGoogle
+                       })
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+    
+
 })
 const userLogin=asyncHandler(async(req:Request,res:Response)=>{
-    const userVlid:{email:string,password:string}=req.body
-    const validUser=await userCheck(userVlid,Authdb,Authserv)
-    res.json(validUser)
+    try{
+        const userVlid:{email:string,password:string}=req.body
+        const validUser=await userCheck(userVlid,Authdb,Authserv)
+        res.json(validUser)
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+   
 
 })
 const googleSignin=asyncHandler(async(req:Request,res:Response)=>{
+    try{
+        const usergSign:{email:string}=req.body
+        const googleUser=await userGgleSign(usergSign,Authdb,Authserv)
+        console.log(googleUser,'usses');
+        res.json(googleUser)
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
     
-    const usergSign:{email:string}=req.body
-    const googleUser=await userGgleSign(usergSign,Authdb,Authserv)
-    console.log(googleUser,'usses');
-    res.json(googleUser)
+  
 })
 const adminSignin=asyncHandler(async(req:Request,res:Response)=>{
+    try{
+        const AdminCred:{email:String,password:String}=req.body
+        const Admin=await adminReg(AdminCred,AuthadDb,Authserv)
+        res.json(Admin)
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
    
-    const AdminCred:{email:String,password:String}=req.body
-    const Admin=await adminReg(AdminCred,AuthadDb,Authserv)
-    res.json(Admin)
+   
 
 })
 const tutorSignin=asyncHandler(async(req:Request,res:Response)=>{
-    const tutor:{email:string,password:string}=req.body
-    const tutors=await tutorLogin(tutor,AuthtutorDb,Authserv)
-    res.json(tutors)
+    try{
+        const tutor:{email:string,password:string}=req.body
+        const tutors=await tutorLogin(tutor,AuthtutorDb,Authserv)
+        res.json(tutors)
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+   
+  
 })
 const verifyPhone=asyncHandler(async(req:Request,res:Response)=>{
-   const phone: {phoneNumber:string}=req.body
-   const validPhone=await phoneValidate(phone,Authdb,Authserv)
-   
-   res.json({validPhone})
+    try{
+        const phone: {phoneNumber:string}=req.body
+        const validPhone=await phoneValidate(phone,Authdb,Authserv)
+        
+        res.json({validPhone})
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+ 
 })
 const getCourses=asyncHandler(async(req:Request,res:Response)=>{
+    try{
+        const allCourses=await findCourses(Authdb)
+        res.json({allCourses})
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
  
-    const allCourses=await findCourses(Authdb)
-    res.json({allCourses})
+  
 })
 const singleCourse=asyncHandler(async(req:Request,res:Response)=>{
-    const courseId=req.params.courseId
-    const course=await getCourse(Authdb,courseId)
-    res.json({status:200,
-               course})
+    try{
+        const courseId=req.params.courseId
+        const course=await getCourse(Authdb,courseId)
+        res.json({status:200,
+                   course})
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+   
 })
 const RazorPayment=asyncHandler(async(req:Request,res:Response)=>{
     var instance = new Razorpay({ key_id: 'rzp_test_PuWlV36hk7Gp53', key_secret: 'Jt87jAYeL41nmg3goQMmK827' })
