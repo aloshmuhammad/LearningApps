@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { setToken,setTutor} from '../Redux/Reducers/tutorSlice';
+import ErrorPage from './Error/ErrorPage';
 
 const Tutorlogin = () => {
   const dispatch=useDispatch()
@@ -20,6 +21,7 @@ const Tutorlogin = () => {
   // console.log(Tutor,'oop')
 
   const [error,setError]=useState('')
+  const [erro,setErr]=useState('')
   const navigate=useNavigate()
   const {values,errors,isSubmitting, handleChange,handleSubmit }=useFormik({
     initialValues:{
@@ -51,6 +53,17 @@ const Tutorlogin = () => {
        }
       }).catch((err)=>{
         console.log(err)
+        if(err.response){
+          setErr(err.response.data.error)
+        }
+        else {
+      
+          setErr("An error occurred during Admin Sign IN.");
+        }
+        if (erro) {
+      
+          return <ErrorPage message={erro} />;
+        }
       })
 
     }

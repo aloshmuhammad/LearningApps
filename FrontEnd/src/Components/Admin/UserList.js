@@ -136,8 +136,14 @@ const UserList = () => {
         })
         setData([...updatedData])
         
-    }).catch((error)=>{
-        console.log(error)
+    }).catch((err)=>{
+        if(err.response){
+          setError(err.response.data.error)
+        }
+        else {
+      
+          setError("An error occurred while Blocking The Tutor.");
+        }
 
     })
   };

@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -8,8 +8,10 @@ import Grid from '@mui/material/Grid';
 import { useFormik } from 'formik'; 
 import courseSchema from '../Validation/CourseValidation';
 import { toast } from 'react-toastify';
+import ErrorPage from '../Error/ErrorPage';
 
 const AddCourse = () => {
+  const [error,setError]=useState('')
     const {values,errors, handleChange,handleBlur,handleSubmit }=useFormik({
       initialValues:{
         title:'',
@@ -33,6 +35,18 @@ const AddCourse = () => {
            if(response.data.status)toast.success('Course Added Sucessfully')
         }).catch((err)=>{
             console.log(err)
+            if(err?.response){
+              setError(err.response.data.error)
+            }
+            else {
+          
+              setError("An error occurred while Adding The Course.");
+            }
+            if (error) {
+    
+              return <ErrorPage message={error} />;
+            }  
+
         })
       }
     })

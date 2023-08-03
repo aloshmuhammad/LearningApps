@@ -10,9 +10,11 @@ import {useFormik,Form } from 'formik';
 import signinSchema from './Validation/userSign';
 import instance from '../Axios/axios';
 import { useNavigate } from 'react-router-dom';
+import ErrorPage from './Error/ErrorPage';
 
 const AdLogin = () => {
   const [error,setError]=useState('')
+  const [erro,setErr]=useState('')
   const navigate=useNavigate()
 
   const {values,errors,isSubmitting, handleChange,handleBlur,handleSubmit }=useFormik({
@@ -38,7 +40,17 @@ const AdLogin = () => {
       }
       
     }).catch((err)=>{
-        console.log(err)
+      if(err.response){
+        setErr(err.response.data.error)
+      }
+      else {
+    
+        setErr("An error occurred during Admin Sign IN.");
+      }
+      if (erro) {
+    
+        return <ErrorPage message={erro} />;
+      }
     })
    }
 

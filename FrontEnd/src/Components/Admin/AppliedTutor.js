@@ -6,11 +6,13 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import './UsersList.css'
+import ErrorPage from '../Error/ErrorPage';
 
 
 const AppliedTutor = () => {
     const [data, setData] = useState([]);
     const[recruited,setRecruited]=useState(false)
+    const[error,setError]=useState('')
   
     const theme = useTheme();
   
@@ -141,8 +143,20 @@ const AppliedTutor = () => {
         })
         .catch((err) => {
           console.log(err);
+          if(err.response){
+            setError(err.response.data.error)
+          }
+          else {
+        
+            setError("An error occurred Fetching Applied Tutors.");
+          }
+
         });
     }, []);
+    if (error) {
+    
+      return <ErrorPage message={error} />;
+    }
   
     const handleRecuruit = (rowData) => {
     const token=localStorage.getItem('Token')
@@ -160,8 +174,19 @@ const AppliedTutor = () => {
 
           }
           
-      }).catch((error)=>{
-          console.log(error)
+      }).catch((err)=>{
+        if(err.response){
+          setError(err.response.data.error)
+        }
+        else {
+      
+          setError("An error occurred Fetching Applied Tutors.");
+        }
+        if (error) {
+    
+          return <ErrorPage message={error} />;
+        }
+
   
       })
     };

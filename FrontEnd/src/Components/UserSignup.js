@@ -15,7 +15,7 @@ import {useNavigate} from 'react-router-dom'
 import {auth,provider} from '../FirebaseAuth/config'
 import {signInWithPopup} from 'firebase/auth'
 import { Link } from 'react-router-dom';
-
+import ErrorPage from './Error/ErrorPage';
 
 
 
@@ -25,6 +25,7 @@ const UserSignup = () => {
 
   const navigate=useNavigate('')
   const [error,setError]=useState('')
+  const[erro,setErr]=useState('')
   const handleGoogleSign=()=>{
     signInWithPopup(auth,provider).then((data)=>{
     
@@ -52,8 +53,20 @@ const UserSignup = () => {
       navigate('/')
     }
 
-  }).catch((err)=>console.log(err))
-
+  }).catch((err)=>{
+    if(err.response){
+      setErr(err.response.data.error)
+    }
+    else {
+  
+      setErr("An error occurred while Blocking The Tutor.");
+    }
+    if (erro) {
+  
+      return <ErrorPage message={erro} />;
+    }
+  })
+  
     })
   
   } 
@@ -95,7 +108,19 @@ const UserSignup = () => {
         navigate('/')
       }
 
-    }).catch((err)=>console.log(err))
+    }).catch((err)=>{
+      if(err.response){
+        setErr(err.response.data.error)
+      }
+      else {
+    
+        setErr("An error occurred while Blocking The Tutor.");
+      }
+      if (erro) {
+    
+        return <ErrorPage message={erro} />;
+      }
+    })
      
  
   }

@@ -7,10 +7,17 @@ import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import instance from '../../Axios/axios';
 import './UsersList.css'
 import SendIcon from '@mui/icons-material/Send'
+import ErrorPage from '../Error/ErrorPage';
+
+
+
+
+
 
 const CoursesManage = () => {
 
     const [data, setData] = useState([]);
+    const [error,setError]=useState('')
   
   const theme = useTheme();
   useEffect(()=>{
@@ -24,8 +31,19 @@ const CoursesManage = () => {
         setData(data?.course)
     }).catch((err)=>{
         console.log(err)
+        if(err.response){
+          setError(err.response.data.error)
+        }
+        else {
+      
+          setError("An error occurred while fetching Course list.");
+        }
     })
   },[])
+  if (error) {
+    
+    return <ErrorPage message={error} />;
+  }
 
   
 

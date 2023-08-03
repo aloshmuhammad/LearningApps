@@ -5,12 +5,14 @@ import instance from '../Axios/axios';
 
 import { auth } from '../FirebaseAuth/config';
 import { useNavigate } from 'react-router-dom';
+import ErrorPage from './Error/ErrorPage';
 
 const theme = createTheme();
 
 const OtpPhone = ({ onNext }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
+  const[erro,setErr]=useState('')
   const navigate = useNavigate();
   
   const handleChange = (e) => {
@@ -50,8 +52,19 @@ const OtpPhone = ({ onNext }) => {
                 window.confirmationResult = confirmationResult
                 navigate(`/user/otp-log?phoneNumber=${phoneNumber}`, { confirmationResult });
             })
-            .catch((error) => {
-              console.log('Otp Sending Failed', error)
+            .catch((err) => {
+              if(err.response){
+                setErr(err.response.data.error)
+              }
+              else {
+            
+                setErr("An error occurred while Blocking The Tutor.");
+              }
+              if (erro) {
+            
+                return <ErrorPage message={erro} />;
+              }
+              
               
               // Handle OTP sending failure here
             });

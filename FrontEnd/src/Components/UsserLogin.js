@@ -16,12 +16,14 @@ import { useNavigate } from 'react-router-dom';
 import {auth,provider} from '../FirebaseAuth/config'
 import { Link } from 'react-router-dom';
 import {signInWithPopup} from 'firebase/auth'
+import ErrorPage from './Error/ErrorPage';
 
 
 const UserLogin = () => {
   const [email,setEmail]=useState('')
   const navigate=useNavigate()
   const [error,setError]=useState('')
+  const [erro,setErr]=useState('')
   const {values,errors,isSubmitting, handleChange,handleBlur,handleSubmit }=useFormik({
     initialValues:{
       email:'',
@@ -49,7 +51,19 @@ const UserLogin = () => {
    
      
       
-     }).catch((err)=>console.log(err))
+     }).catch((err)=>{
+      if(err.response){
+        setErr(err.response.data.error)
+      }
+      else {
+    
+        setErr("An error occurred while User Login.");
+      }
+      if (erro) {
+    
+        return <ErrorPage message={erro} />;
+      }
+     })
 
     }
 
@@ -80,7 +94,19 @@ const UserLogin = () => {
       navigate('/')
     }
 
-  }).catch((err)=>console.log(err))
+  }).catch((err)=>{
+    if(err.response){
+      setErr(err.response.data.error)
+    }
+    else {
+  
+      setErr("An error occurred during User Google SignIn.");
+    }
+    if (erro) {
+  
+      return <ErrorPage message={erro} />;
+    }
+  })
 
     })
   

@@ -4,10 +4,12 @@ import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import Modal from '@mui/material/Modal'
 import instance from '../../Axios/axios';
 import './UsersList.css'
+import ErrorPage from '../Error/ErrorPage';
 
 
 const TutorsList = () => {
 const [data, setData] = useState([]);
+const [error,setError]=useState('')
   
 const theme = useTheme();
 const [selectedTutor, setSelectedTutor] = useState(null);
@@ -111,8 +113,19 @@ useEffect(() => {
     })
     .catch((err) => {
       console.log(err);
+      if(err.response){
+        setError(err.response.data.error)
+      }
+      else {
+    
+        setError("An error occurred while fetching user list.");
+      }
     });
 }, []);
+if (error) {
+    
+  return <ErrorPage message={error} />;
+}
 
 const handleBlock=(rowData)=>{
     setSelectedTutor(rowData)
