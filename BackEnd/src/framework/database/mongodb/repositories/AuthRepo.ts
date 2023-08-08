@@ -73,16 +73,21 @@ export const userRepositoryMongo=()=>{
       
      }
      const orderSet=async(details:{courses:string,user:string,price:number,status:boolean})=>{
-      const newOrder={
-        user:details.user,
-        courses:[details.courses],
-        price:details.price,
-        status:details.status
+      try{
+        const newOrder={
+          user:details.user,
+          courses:[details.courses],
+          price:details.price,
+          status:details.status
+        }
+       const createdOrder= await Order.create(details)
+       
+        // await Course.findByIdAndUpdate(details.courses,{user:details.user},{new:true})
+       return createdOrder
+      }catch(err:any){
+        throw new Error('Error occured during Creating The Order')
       }
-     const createdOrder= await Order.create(details)
-     
-      // await Course.findByIdAndUpdate(details.courses,{user:details.user},{new:true})
-     return createdOrder
+  
      }
      const getOrder=async(userId:string)=>{
 
@@ -92,7 +97,32 @@ export const userRepositoryMongo=()=>{
       return myCourse
     
      }
+     const getData=async(userId:string)=>{
+      try{
+
+        const data=await User.findById(userId)
+        console.log(data,'plk')
+        return data
+      }catch(err:any){
+        throw new Error('Error occured during Fetching User Details for Profile')
+      }
+     }
+     const updateProfile=async(user:{UserId:string,firstName:string,lastName:string,email:string,phoneNo:string,profileUrl:string})=>{
+       try{
+        const { UserId, firstName, lastName, email, phoneNo,profileUrl } = user;
+        const updatedData=await User.findByIdAndUpdate(UserId,{firstName,
+        lastName,
+        email,
+        profileUrl,
+
+        phoneNo},{new:true})
+       
+       return updatedData
+     }catch(err:any){
+      throw new Error('Error occured during Updating The Profile')
+    }
+  }
     
-    return {findbyEmail,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder}
+    return {findbyEmail,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder,getData,updateProfile}
 }
 export type UserRepositoryMongo=typeof userRepositoryMongo

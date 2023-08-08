@@ -6,6 +6,7 @@ import OtpPhoneInput from '../Pages/Users/OtpPhoneInput';
 import CourseSingle from '../Pages/Users/CourseSingle';
 import MyCourses from '../Pages/Users/MyCourses';
 import NotFound from '../Pages/NotFound';
+import Profile from '../Pages/Users/Profile';
 
 import { BrowserRouter, Route,Routes } from 'react-router-dom';
 const User = () => {
@@ -20,6 +21,7 @@ const User = () => {
             <Route path='otp-phone' element={<OtpPhoneInput/>}/>
             <Route path='course-single/:courseId' element={<CourseSingle/>}/>
             <Route path='my-courses' element={Token?<MyCourses/>:<Login/>}/>
+            <Route path='/profile' element={Token?<Profile/>:<Login/>}/>
             <Route path="*" element={<NotFound />} />
         </Routes>
         

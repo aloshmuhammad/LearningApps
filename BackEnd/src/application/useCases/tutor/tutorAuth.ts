@@ -74,3 +74,21 @@ export const tutorBuyCourse=async(repositories:ReturnType<Tutorrepointer>,TutorS
   
 
 }
+export const getDetails=async(tutorId:string,repositories:ReturnType<Tutorrepointer>)=>{
+    try{
+        
+        const data=await repositories.getData(tutorId)
+        return data
+    }catch(error:any){
+        throw error
+      }
+
+}
+export const profileEdit=async(tutor:{TutorId:string,name:string,address:string,highestqualification:string,email:string,profileUrl:string,age:string},repositories:ReturnType<Tutorrepointer>)=>{
+    try{
+      const upData=await repositories.updateProfile(tutor)
+      return upData
+    }catch(error:any){
+         throw error
+       }
+ }

@@ -5,7 +5,7 @@ import { Tutorrepoimpl } from '../../framework/database/mongodb/repositories/Tut
 import fs from 'fs'
 import AWS, { S3 } from 'aws-sdk';
 import { S3Client } from "@aws-sdk/client-s3"
-import { tutorForm, tutorSelectCourse,videoUrlupload,getCourseVideos,tutorBuyCourse } from '../../application/useCases/tutor/tutorAuth'
+import { tutorForm, tutorSelectCourse,videoUrlupload,getCourseVideos,tutorBuyCourse,profileEdit,getDetails } from '../../application/useCases/tutor/tutorAuth'
 import configKeys from '../../configkeys'
 import { TutorService } from '../../framework/service/TutorService'
 import { TutorServiceInterface } from '../../application/services/tutorServiceInterface'
@@ -148,9 +148,70 @@ const tutorManageController=(tutorrepoImplement:Tutorrepoimpl,tutorrepointer:Tut
           const buyCourses=await tutorBuyCourse(tutorMange,tutorServices,Token)
          
         })
+        const myProfile=asyncHandler(async(req:Request,res:Response)=>{
+          try{
+              const {TutorId}=req.params
+              
+              const getProfile=await getDetails(TutorId,tutorMange)
+              res.json({getProfile})
+              
+          }catch(error:any){
+                
+              res.status(500).json({ message: "An error occurred", error: error.message });
+          }
+         
+      })
+        const editProfile=asyncHandler(async(req:Request,res:Response)=>{
+          try{
+              console.log(req.body,'poi')
+              const tutor:{TutorId:string,name:string,address:string,email:string,age:string,profileUrl:string,highestqualification:string}=req.body
+              if (!req.files || !req.files.TutorprofilePicture) {
+                const updatedData=await profileEdit(tutor,tutorMange)
+                res.json({updatedData})
+                  // res.status(400).json({ error: 'No file uploaded' });
+               }
+               const file = (req.files as any).TutorprofilePicture;
+               console.log(file,'po')
+               const s3=new AWS.S3({accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+                  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,params:{Bucket:'itsmyproject'}})
+                  const uploadFileToS3 = (fileData:any) => {
+                      const params = {
+                        Bucket: 'itsmyproject',
+                        Key: `uploads/${fileData.name}`, // Specify the desired location and filename in S3
+                        Body: fileData.data,
+                        ACL:'public-read',
+                        ContentType: fileData.mimetype,
+                      };
+                      return new Promise<string>((resolve, reject) => {
+                          s3.upload(params, (err: Error, data: AWS.S3.ManagedUpload.SendData) => {
+                            if (err) {
+                              console.log(`Error uploading file: ${err}`);
+                              reject(err);
+                            } else {
+                              console.log(`File uploaded successfully. File location: ${data.Location}`);
+                              
+                              resolve(data.Location);
+                            }
+                          });
+                        });
+                      };
+                      
+                          const s3FileLocation = await uploadFileToS3(file);
+                          console.log('S3 File Location:', s3FileLocation);
+                         tutor.profileUrl=s3FileLocation
+                         const updatedData=await profileEdit(tutor,tutorMange)
+                         res.json({updatedData})
+      
+              
+      
+          }catch(error:any){
+                
+              res.status(500).json({ message: "An error occurred", error: error.message });
+          }
+      })
 
     
 
-    return {tutorApply,tutorCourse,videoUpload,listVideos,getCourse}
+    return {tutorApply,tutorCourse,videoUpload,listVideos,getCourse,editProfile,myProfile}
 }
 export default tutorManageController

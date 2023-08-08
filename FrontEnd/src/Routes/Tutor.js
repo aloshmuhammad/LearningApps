@@ -7,6 +7,7 @@ import TutorAddCourse from '../Pages/Tutors/TutorAddCourse';
 import VideoListing from '../Pages/Tutors/VideoListing';
 import TutorsBuyedC from '../Pages/Tutors/TutorsBuyedC';
 import NotFound from '../Pages/NotFound';
+import Profile from '../Pages/Tutors/Profile';
 
 const Tutor = () => {
   const Token=localStorage.getItem('Token')
@@ -19,6 +20,7 @@ const Tutor = () => {
             <Route path='add-course' element={Token?<TutorAddCourse/>:<Login/>}/>
             <Route path='course-videos' element={Token?<VideoListing/>:<Login/>}/>
             <Route path='buyed-course' element={Token?<TutorsBuyedC/>:<Login/>}/>
+            <Route path='profile' element={Token?<Profile/>:<Login/>}/>
             <Route path="*" element={<NotFound />} />
             
             

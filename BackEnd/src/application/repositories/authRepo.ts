@@ -9,6 +9,8 @@ const getCourses=async()=>await repositories.getCourses()
 const getCourse=async(courseId:string)=>await repositories.getCourse(courseId)
 const orderSet=async(details:{courses:string,user:string,price:number,status:boolean})=>await repositories.orderSet(details)
 const getOrder=async(userId:string)=>await repositories.getOrder(userId)
-return {findbyEmail,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder}
+const getData=async(userId:string)=>await repositories.getData(userId)
+const updateProfile=async(user:{UserId:string,firstName:string,lastName:string,email:string,phoneNo:string,profileUrl:string})=>await repositories.updateProfile(user)
+return {findbyEmail,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder,getData,updateProfile}
 }
 export type AuthInter=typeof authInter

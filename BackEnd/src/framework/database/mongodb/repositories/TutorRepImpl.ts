@@ -53,6 +53,32 @@ export const tutorrepoimpl=()=>{
          console.log(tutor)
        
     }
-    return {findbyEmailTutor,addTutorApply,findTutors,tutorCourse,addUrl,getVideo,getTcourse}
+    const getData=async(tutorId:string)=>{
+        try{
+  
+          const data=await Tutor.findById(tutorId)
+          
+          return data
+        }catch(err:any){
+          throw new Error('Error occured during Fetching User Details for Profile')
+        }
+       }
+    const updateProfile=async(tutor:{TutorId:string,name:string,address:string,email:string,highestqualification:string,profileUrl:string,age:string})=>{
+        try{
+         const { TutorId, name, address, email, highestqualification,profileUrl,age } = tutor;
+         const updatedData=await Tutor.findByIdAndUpdate(TutorId,{name,
+         address,
+         email,
+         profileUrl,
+         age,
+         highestqualification
+          },{new:true})
+        
+        return updatedData
+      }catch(err:any){
+       throw new Error('Error occured during Updating The Profile')
+     }
+   }
+    return {findbyEmailTutor,addTutorApply,findTutors,tutorCourse,addUrl,getVideo,getTcourse,updateProfile,getData}
 }
 export type Tutorrepoimpl=typeof tutorrepoimpl

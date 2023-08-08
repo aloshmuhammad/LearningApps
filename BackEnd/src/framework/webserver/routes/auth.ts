@@ -27,6 +27,8 @@ router.get('/course/:courseId',Authentication as any,controller.singleCourse)
 router.post('/capture-order',Authentication as any,controller.RazorPayment)
 router.post('/verify-payment',Authentication as any,controller.VerifyPay)
 router.get('/my-courses/:userId',Authentication as any,controller.myCourses)
+router.get('/get-profile/:userId',Authentication as any,controller.myProfile)
+router.put('/profile-edit',Authentication as any,controller.editProfile)
 
 
 

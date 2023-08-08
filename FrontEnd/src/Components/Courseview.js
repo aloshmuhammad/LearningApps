@@ -11,10 +11,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Paypalpayment from './Paypalpayment';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { toast } from 'react-toastify'
+import ErrorPage from './Error/ErrorPage';
 
 const Courseview = () => {
   const { courseId } = useParams();
   const [course, setCourse] = useState([]);
+  const [error,setError]=useState('')
   const [isLiked, setIsLiked] = useState(false);
   const [buy,setBuy]=useState(false)
   const [orders,setOrders]=useState([])
@@ -55,6 +57,18 @@ const Courseview = () => {
           }
         }).catch((err)=>{
           console.log(err)
+          if(err.response){
+            setError(err.response.data.error)
+          }
+          else {
+        
+            setError("An error occurred while Making the Payment.");
+          }
+          if (error) {
+    
+            return <ErrorPage message={error} />;
+          }
+
         })
       }
     }

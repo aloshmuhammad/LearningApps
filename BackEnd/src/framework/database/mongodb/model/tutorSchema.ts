@@ -22,7 +22,7 @@ const tutorSchema=new Schema({
     },
     status:{
         type:Boolean,
-        required:[true]
+        // required:[true]
     },
     highestqualification:{
         type:String
@@ -31,6 +31,9 @@ const tutorSchema=new Schema({
         type:String
     },
     age:{
+        type:String
+    },
+    profileUrl:{
         type:String
     }
 })

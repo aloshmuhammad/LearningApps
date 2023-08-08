@@ -18,6 +18,9 @@ import { findCourses } from "../../application/useCases/User/userSignup"
 import { getCourse } from "../../application/useCases/User/userSignup"
 import { orderAdd } from "../../application/useCases/User/userSignup"
 import { getMycourse } from "../../application/useCases/User/userSignup"
+import { getDetails } from "../../application/useCases/User/userSignup"
+import { profileEdit } from "../../application/useCases/User/userSignup"
+import AWS, { S3 } from 'aws-sdk';
 import Razorpay from "razorpay"
 import crypto from 'crypto'
 
@@ -164,46 +167,60 @@ const singleCourse=asyncHandler(async(req:Request,res:Response)=>{
    
 })
 const RazorPayment=asyncHandler(async(req:Request,res:Response)=>{
-    var instance = new Razorpay({ key_id: 'rzp_test_PuWlV36hk7Gp53', key_secret: 'Jt87jAYeL41nmg3goQMmK827' })
+    try{
+        var instance = new Razorpay({ key_id: 'rzp_test_PuWlV36hk7Gp53', key_secret: 'Jt87jAYeL41nmg3goQMmK827' })
 
-var options = {
-  amount: req.body.price,  // amount in the smallest currency unit
-  currency: "INR",
-
-};
-instance.orders.create(options, function(err, order) {
-    if(err){
-        res.send({code:500})
+        var options = {
+          amount: req.body.price,  // amount in the smallest currency unit
+          currency: "INR",
+        
+        };
+        instance.orders.create(options, function(err, order) {
+            if(err){
+                res.send({code:500})
+            }
+            res.send({code:200,data:order})
+          console.log(order);
+        });
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: 'Error occured during Payment'});
     }
-    res.send({code:200,data:order})
-  console.log(order);
-});
+
 })
 const VerifyPay=asyncHandler(async(req:Request,res:Response)=>{
-    const{data}=req.body
-    console.log(data)
-    const  key_id= 'rzp_test_PuWlV36hk7Gp53'
-    const   key_secret= 'Jt87jAYeL41nmg3goQMmK827'
+    try{
+        const{data}=req.body
 
-
-    let body=data.razorpay_order_id + '|' + data.razorpay_payment_id
-    var expectedSignature=crypto.createHmac('sha256',key_secret).update(body.toString())
-    .digest('hex')
-    if(expectedSignature===data.razorpay_signature)
-    {
-        const details={
-            courses:data.course._id,
-            user:data.user,
-            price:data.course.price,
-            status:true
+        console.log(data)
+        const  key_id= 'rzp_test_PuWlV36hk7Gp53'
+        const   key_secret= 'Jt87jAYeL41nmg3goQMmK827'
+    
+    
+        let body=data.razorpay_order_id + '|' + data.razorpay_payment_id
+        var expectedSignature=crypto.createHmac('sha256',key_secret).update(body.toString())
+        .digest('hex')
+        if(expectedSignature===data.razorpay_signature)
+        {
+            const details={
+                courses:data.course._id,
+                user:data.user,
+                price:data.course.price,
+                status:true
+            }
+             const createOrder=await orderAdd(details,Authdb)
+            res.json({code:200,message:'valid signature and',createOrder, status:true})
         }
-         const createOrder=await orderAdd(details,Authdb)
-        res.json({code:200,message:'valid signature and',createOrder, status:true})
+        else{
+               
+        res.json({code:500,message:'invalid signature'})
+        }
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
     }
-    else{
-           
-    res.json({code:500,message:'invalid signature'})
-    }
+   
+   
     //  var instance = new Razorpay({ key_id:'rzp_test_PuWlV36hk7Gp53', key_secret: 'Jt87jAYeL41nmg3goQMmK827' })
 
     //  var { validatePaymentVerification, validateWebhookSignature } = require('./dist/utils/razorpay-utils');
@@ -215,8 +232,69 @@ const myCourses=asyncHandler(async(req:Request,res:Response)=>{
     res.json({code:200,myCourse})
   
 })
+const myProfile=asyncHandler(async(req:Request,res:Response)=>{
+    try{
+        const {userId}=req.params
+        
+        const getProfile=await getDetails(userId,Authdb)
+        res.json({getProfile})
+        
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+   
+})
+const editProfile=asyncHandler(async(req:Request,res:Response)=>{
+    try{
+        console.log(req.body,'poi')
+        const user:{UserId:string,firstName:string,lastName:string,phoneNo:string,email:string,profileUrl:string}=req.body
+        if (!req.files || !req.files.profilePicture) {
+            const updatedData=await profileEdit(user,Authdb)
+            res.json({updatedData})
+         }
+         const file = (req.files as any).profilePicture;
+         console.log(file,'po')
+         const s3=new AWS.S3({accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,params:{Bucket:'itsmyproject'}})
+            const uploadFileToS3 = (fileData:any) => {
+                const params = {
+                  Bucket: 'itsmyproject',
+                  Key: `uploads/${fileData.name}`, // Specify the desired location and filename in S3
+                  Body: fileData.data,
+                  ACL:'public-read',
+                  ContentType: fileData.mimetype,
+                };
+                return new Promise<string>((resolve, reject) => {
+                    s3.upload(params, (err: Error, data: AWS.S3.ManagedUpload.SendData) => {
+                      if (err) {
+                        console.log(`Error uploading file: ${err}`);
+                        reject(err);
+                      } else {
+                        console.log(`File uploaded successfully. File location: ${data.Location}`);
+                        
+                        resolve(data.Location);
+                      }
+                    });
+                  });
+                };
+                
+                    const s3FileLocation = await uploadFileToS3(file);
+                    console.log('S3 File Location:', s3FileLocation);
+                   user.profileUrl=s3FileLocation
+
+        const updatedData=await profileEdit(user,Authdb)
+        res.json({updatedData})
+
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+})
 
 return {
+
+
 
     registerUser,
     googlesignup,
@@ -229,7 +307,9 @@ return {
     singleCourse,
     RazorPayment,
     VerifyPay,
-    myCourses
+    myCourses,
+    myProfile,
+    editProfile
 
 }
 }

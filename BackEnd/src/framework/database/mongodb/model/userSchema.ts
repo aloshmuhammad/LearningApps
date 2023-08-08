@@ -32,6 +32,9 @@ const userSchema=new Schema({
     status:{
         type:Boolean
     },
+    profileUrl:{
+        type:String
+    },
     course:[{
         type:Schema.Types.ObjectId
     }]

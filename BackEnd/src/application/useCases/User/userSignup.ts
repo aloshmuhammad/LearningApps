@@ -103,18 +103,46 @@ export const findCourses=async(userRepository:ReturnType<AuthInter>)=>{
   
 }
 export const getCourse=async(userRepository:ReturnType<AuthInter>,courseId:string)=>{
-    const course=await userRepository.getCourse(courseId)
-    return course
+    try{
+        const course=await userRepository.getCourse(courseId)
+        return course
+    }catch(error:any){
+        throw error
+      }
+ 
 }
 export const orderAdd=async(details:{courses:string,user:string,price:number,status:boolean},userRepository:ReturnType<AuthInter>)=>{
-  const setOrder=await userRepository.orderSet(details)
+    try{
+        const setOrder=await userRepository.orderSet(details)
 
-  return setOrder
+        return setOrder
+    }catch(error:any){
+        throw error
+      }
+ 
 }
 export const getMycourse=async(userId:string,userRepository:ReturnType<AuthInter>)=>{
     const ourCourse=await userRepository.getOrder(userId)
     return ourCourse
   
+}
+export const getDetails=async(userId:string,userRepository:ReturnType<AuthInter>)=>{
+    try{
+        
+        const data=await userRepository.getData(userId)
+        return data
+    }catch(error:any){
+        throw error
+      }
+
+}
+export const profileEdit=async(user:{UserId:string,firstName:string,lastName:string,phoneNo:string,email:string,profileUrl:string},userRepository:ReturnType<AuthInter>)=>{
+   try{
+     const upData=await userRepository.updateProfile(user)
+     return upData
+   }catch(error:any){
+        throw error
+      }
 }
 
 
