@@ -122,7 +122,19 @@ export const userRepositoryMongo=()=>{
       throw new Error('Error occured during Updating The Profile')
     }
   }
+  const searchRepo=async(searchQuery:any)=>{
+    try{
+      console.log(searchQuery,'rep')
+      const result=await Course.find({$or:[{ title: { $regex: searchQuery, $options: 'i' } },
+      { Description: { $regex: searchQuery, $options: 'i' } }]})
+      console.log(result,'rsl')
+      return result
+    }catch(err:any){
+      throw new Error('Error occured during the Course Search')
+    }
+  
+  }
     
-    return {findbyEmail,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder,getData,updateProfile}
+    return {findbyEmail,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder,getData,updateProfile,searchRepo}
 }
 export type UserRepositoryMongo=typeof userRepositoryMongo

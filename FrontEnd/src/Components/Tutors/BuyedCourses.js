@@ -3,12 +3,16 @@ import MUIDataTable from 'mui-datatables';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import Modal from '@mui/material/Modal'
 import instance from '../../Axios/axios';
+import { useSelector } from 'react-redux';
 import './UsersList.css'
+import ErrorPage from '../Error/ErrorPage';
 
 
 
-const BuyedCourse = () => {
+const BuyedCourseList = () => {
+  let Tutor =useSelector((state)=>state.tutorInfo.tutor)
 const [data, setData] = useState([]);
+const [error,setError]=useState('')
   
 const theme = useTheme();
 
@@ -16,7 +20,7 @@ const theme = useTheme();
 const columns = [
 
     {
-        name: 'userName',
+        name: 'firstName',
         label: 'UserName',
         options: {
           filter: true,
@@ -24,29 +28,29 @@ const columns = [
         },
       },
   {
-    name: 'title',
-    label: 'Course',
+    name: 'email',
+    label: 'Email',
     options: {
       filter: true,
       sort: false,
     },
   },
-  {
-    name: 'price',
-    label: 'Price',
-    options: {
-      filter: true,
-      sort: true,
-    },
-  },
-  {
-    name: 'Description',
-    label: 'Description',
-    options: {
-      filter: true,
-      sort: true,
-    },
-  },
+  // {
+  //   name: 'price',
+  //   label: 'Price',
+  //   options: {
+  //     filter: true,
+  //     sort: true,
+  //   },
+  // },
+  // {
+  //   name: 'Description',
+  //   label: 'Description',
+  //   options: {
+  //     filter: true,
+  //     sort: true,
+  //   },
+  // },
 
 
 
@@ -85,39 +89,39 @@ const customTheme = createTheme({
 useEffect(() => {
 
 
-    if (localStorage.getItem('Token')) {
-        const token = localStorage.getItem('Token');
-        const Token = {
-          token: token
-        };
-    
+    const token=localStorage.getItem('Token')
+
+
   instance
-    .post('/tutor/buyed-Course',Token,{headers: {
+    .get(`/tutor/buyed-Course/${Tutor._id}`,{headers: {
         Authorization: token
       }})
     .then((response) => {
-        console.log(response)
-        // console.log(response.data.buyCourses,'pk')
-        // const flattenedData = response?.data?.buyCourses?.flatMap((item) =>
-        // item?.courses?.map((course) => ({
-        //   title: course?.title,
-        //   price: course?.price,
-        //   Description: course?.Description,
-        //   userName:item.user.firstName
-    //     }))
-    //   );
-    //   setData(flattenedData);
-          
+        const{data}=response
+        setData(data)
+       
+      
+     
         
        
       
 
     })
     .catch((err) => {
-      console.log(err);
+      if(err.response){
+        setError(err.response.data.error)
+      }
+      else {
+    
+        setError("An error occurred while fetching Course Buyers For Tutor");
+      }
+     
     });
-}
 }, []);
+if (error) {
+    
+  return <ErrorPage message={error} />;
+}
 
 
 
@@ -147,4 +151,4 @@ return (
 
   
 
-export default BuyedCourse
+export default BuyedCourseList

@@ -10,6 +10,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
+import instance from '../Axios/axios';
+import { useDispatch,useSelector } from 'react-redux';
+import { setSearch } from '../Redux/Reducers/SearchSlice';
+
 
 import './Navba.css'
 import { useMediaQuery } from '@mui/material';
@@ -59,8 +63,10 @@ const Search = styled('div')(({ theme }) => ({
 
   const Navba = () => {
     const navigate = useNavigate();
+    const dispatch=useDispatch()
 
     const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([])
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [anchorEl, setAnchorEl] = useState(null);
@@ -85,6 +91,19 @@ const Search = styled('div')(({ theme }) => ({
       localStorage.removeItem('userToken');
       localStorage.removeItem('UserInfo');
       navigate('/user/login');
+
+    };
+    const handleSearch = async () => {
+      try {
+        
+        const response = await instance.get(`/auth/search-item/?q=${searchQuery}`);
+        console.log(response.data)
+        setSearchResults(response.data);
+        dispatch(setSearch({ query: searchQuery, results:response.data }))
+        navigate('/user/search')
+      } catch (error) {
+        console.error('Error searching for courses:', error);
+      }
     };
   
     return (
@@ -126,6 +145,7 @@ const Search = styled('div')(({ theme }) => ({
                 inputProps={{ 'aria-label': 'search' }}
                 value={searchQuery}
                 onChange={handleSearchInputChange}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                 
                 
               />

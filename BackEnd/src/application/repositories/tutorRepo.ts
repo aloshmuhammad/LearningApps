@@ -7,7 +7,7 @@ export const tutorrepointer=(repositories:ReturnType<Tutorrepoimpl>)=>{
     const tutorCourse=async(Cid:any)=>await repositories.tutorCourse(Cid)
     const addUrl=async(videoUrl:string,courseId:string)=>await repositories.addUrl(videoUrl,courseId)
     const getVideo=async(courseId:string)=>await repositories.getVideo(courseId)
-    const getTcourse=async(Id:any)=>await repositories.getTcourse(Id)
+    const getTcourse=async(TutorId:string)=>await repositories.getTcourse(TutorId)
     const getData=async(tutorId:string)=>await repositories.getData(tutorId)
     const updateProfile=async(tutor:{TutorId:string,name:string,address:string,email:string,highestqualification:string,age:string,profileUrl:string})=>await repositories.updateProfile(tutor)
     return{

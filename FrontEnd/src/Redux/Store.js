@@ -4,9 +4,13 @@ import userAuthslice from "./Reducers/userAuthslice";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // Defaults to localStorage for web
 import tutorSlice from "./Reducers/tutorSlice";
+import SearchSlice from "./Reducers/SearchSlice";
 
 const rootReducer=combineReducers({
-    tutorInfo:tutorSlice
+    tutorInfo:tutorSlice,
+    search: SearchSlice,
+    
+
 })
 
 const persistConfig = {

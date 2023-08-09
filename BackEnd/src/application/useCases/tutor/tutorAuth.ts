@@ -61,16 +61,11 @@ export const getCourseVideos=async(repositories:ReturnType<Tutorrepointer>,cours
        const video=await repositories.getVideo(courseId)
        return video
 }
-export const tutorBuyCourse=async(repositories:ReturnType<Tutorrepointer>,TutorServices:ReturnType<TutorServiceInterface>,Token:{token:string})=>{
+export const tutorBuyCourse=async(repositories:ReturnType<Tutorrepointer>,TutorId:string)=>{
    
-    const Verify=await TutorServices.verifyToken(Token)
-    if (typeof Verify === 'string') {
-        // Token verification failed
-        console.error('Token verification failed');
-        return;
-      }
-  const {Id}=Verify
-  const tutor=await repositories.getTcourse(Id)
+   
+  const tutorC=await repositories.getTcourse(TutorId)
+  return tutorC
   
 
 }

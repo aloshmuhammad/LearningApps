@@ -1,9 +1,11 @@
 import { TutorInterface } from "../../../../Types/TutorInterface";
 import { CourseInterface } from "../../../../Types/CourseInterface";
+import User from "../model/userSchema";
 import Course from "../model/courseSchema";
 import Tutor from "../model/tutorSchema";
 import TutorApplyS from "../model/tutorapplySchem";
 import { AppliedTutorEntity } from "../../../../entity/appliedtutor";
+import Order from "../model/orderSchema";
 export const tutorrepoimpl=()=>{
    
         const findbyEmailTutor=async(email:string)=>{
@@ -48,11 +50,51 @@ export const tutorrepoimpl=()=>{
        const course:CourseInterface | null= await Course.findById(courseId)
        return course
     }
-    const getTcourse=async(Id:any)=>{
-        const tutor:TutorInterface | null=await Tutor.findById(Id).populate('course')
-         console.log(tutor)
+    const getTcourse=async(TutorId:string)=>{
+        try{
+            const data=await Tutor.findById(TutorId).populate('course')
+           
+    if (data) {
+        if (Array.isArray(data.course)) { // Check if data.course is an array
+            const courses = data.course as Array<any>; // Cast to array of any type
+    
+            if (courses.length > 0) {
+              const courseIds = courses.map(course => course._id); // Extract _id values
+              console.log(courseIds,'idg')
+    
+              const orders = await Order.find({ courses: { $in: courseIds } });
+             if(orders.length>0){
+                console.log(orders,'order')
+                const OrderPromises= orders.map(async(order)=>{
+                    const Users=await User.findById(order.user)
+                    return Users
+                })
+                const ordersWithUsers = await Promise.all(OrderPromises);
+                return ordersWithUsers
+              
+              
+                
+             }
+            } else {
+              console.log('No courses found for Tutor');
+            }
+          } else {
+            console.log('Invalid data.course format');
+          }
+        } else {
+          console.log('No data found for the provided TutorId');
+        }
+      }
+        
+        catch (err:any) {
+              throw new Error ('Error Occured during Fetching Students for tutor');
+            }
+          };
+      
+      
+         
        
-    }
+    
     const getData=async(tutorId:string)=>{
         try{
   

@@ -143,9 +143,17 @@ const tutorManageController=(tutorrepoImplement:Tutorrepoimpl,tutorrepointer:Tut
           data:videosUrl?.courseVideo
         })
         })
-        const getCourse=asyncHandler(async(req:Request,res:Response)=>{
-          const Token:{token:string}=req.body
-          const buyCourses=await tutorBuyCourse(tutorMange,tutorServices,Token)
+        const getStudents=asyncHandler(async(req:Request,res:Response)=>{
+          try{
+            const {TutorId}=req.params
+            console.log(TutorId,'idg')
+            const buyCourses=await tutorBuyCourse(tutorMange,TutorId)
+            res.json(buyCourses)
+          }catch(error:any){
+                
+            res.status(500).json({ message: "An error occurred", error: error.message });
+        }
+         
          
         })
         const myProfile=asyncHandler(async(req:Request,res:Response)=>{
@@ -209,9 +217,10 @@ const tutorManageController=(tutorrepoImplement:Tutorrepoimpl,tutorrepointer:Tut
               res.status(500).json({ message: "An error occurred", error: error.message });
           }
       })
+      
 
     
 
-    return {tutorApply,tutorCourse,videoUpload,listVideos,getCourse,editProfile,myProfile}
+    return {tutorApply,tutorCourse,videoUpload,listVideos,getStudents,editProfile,myProfile}
 }
 export default tutorManageController

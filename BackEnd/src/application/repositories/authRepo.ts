@@ -11,6 +11,7 @@ const orderSet=async(details:{courses:string,user:string,price:number,status:boo
 const getOrder=async(userId:string)=>await repositories.getOrder(userId)
 const getData=async(userId:string)=>await repositories.getData(userId)
 const updateProfile=async(user:{UserId:string,firstName:string,lastName:string,email:string,phoneNo:string,profileUrl:string})=>await repositories.updateProfile(user)
-return {findbyEmail,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder,getData,updateProfile}
+const searchRepo=async(searchQuery:any)=>await repositories.searchRepo(searchQuery)
+return {findbyEmail,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder,getData,updateProfile,searchRepo}
 }
 export type AuthInter=typeof authInter

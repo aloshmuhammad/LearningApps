@@ -19,9 +19,10 @@ const tutorManage=()=>{
     router.post('/get-course',TutorAuthentication as any,controller.tutorCourse)
     router.post('/add-video',TutorAuthentication as any,controller.videoUpload)
     router.post('/view-classes',TutorAuthentication as any,controller.listVideos)
-    router.post('/buyed-Course',TutorAuthentication as any,controller.getCourse)
+   
     router.get('/get-profile/:TutorId',TutorAuthentication as any ,controller.myProfile)
     router.put('/profile-edit',TutorAuthentication as any,controller.editProfile)
+    router.get('/buyed-Course/:TutorId',TutorAuthentication as any,controller.getStudents)
     
 
 

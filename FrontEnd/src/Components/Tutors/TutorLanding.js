@@ -1,5 +1,5 @@
 import {React,useEffect,  useState}  from 'react';
-import { Link } from 'react-router-dom';
+
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import {
   AppBar,
@@ -20,6 +20,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -88,7 +89,7 @@ const TutorDashboard = () => {
               <MenuIcon />
             </IconButton>
             <Typography sx={{ flexGrow: 1 }} variant="h6" noWrap component="div">
-              Welcome {tutors.name} To Learn-X Tutor DashBoard
+              Welcome <Link to='/tutor/profile'> {tutors.name} </Link>To Learn-X Tutor DashBoard
             </Typography>
             <Stack spacing={2} direction="row">
               <Button onClick={handleClick} sx={{ alignItems: 'end', backgroundColor: 'red' }} variant="contained">
@@ -128,6 +129,14 @@ const TutorDashboard = () => {
                   {/* Add icon component here */}
                 </ListItemIcon>
                 <ListItemText sx={{ color: 'cyan' }} primary="Course Videos" />
+              </ListItemButton>
+              </Link>
+              <Link to='/tutor/buyed-course'>
+              <ListItemButton sx={{ backgroundColor: 'black' }}>
+                <ListItemIcon>
+                  {/* Add icon component here */}
+                </ListItemIcon>
+                <ListItemText sx={{ color: 'cyan' }} primary="Enrolled Students" />
               </ListItemButton>
               </Link>
             

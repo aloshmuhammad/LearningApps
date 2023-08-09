@@ -20,6 +20,7 @@ import { orderAdd } from "../../application/useCases/User/userSignup"
 import { getMycourse } from "../../application/useCases/User/userSignup"
 import { getDetails } from "../../application/useCases/User/userSignup"
 import { profileEdit } from "../../application/useCases/User/userSignup"
+import { searchItem } from "../../application/useCases/User/userSignup"
 import AWS, { S3 } from 'aws-sdk';
 import Razorpay from "razorpay"
 import crypto from 'crypto'
@@ -291,6 +292,19 @@ const editProfile=asyncHandler(async(req:Request,res:Response)=>{
         res.status(500).json({ message: "An error occurred", error: error.message });
     }
 })
+const searchFn=asyncHandler(async(req:Request,res:Response)=>{
+    try{
+        const searchQuery=req.query.q
+      
+         const result=await searchItem(searchQuery,Authdb)
+         res.json(result)
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+   
+
+})
 
 return {
 
@@ -309,7 +323,8 @@ return {
     VerifyPay,
     myCourses,
     myProfile,
-    editProfile
+    editProfile,
+    searchFn
 
 }
 }

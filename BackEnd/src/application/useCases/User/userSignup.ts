@@ -144,5 +144,14 @@ export const profileEdit=async(user:{UserId:string,firstName:string,lastName:str
         throw error
       }
 }
+export const searchItem=async(searchQuery:any,userRepository:ReturnType<AuthInter>)=>{
+    try{
+        const result=await userRepository.searchRepo(searchQuery)
+        return result
+    }catch(error:any){
+        throw error
+      }
+   
+}
 
 
