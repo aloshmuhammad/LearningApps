@@ -181,3 +181,6 @@ export const checkOrder=async(User:string,course:string,userRepository:ReturnTyp
     const result=await userRepository.existOrder(User,course)
     return result
 }
+export  const assSubmit=async(tutorId:string,submitUrl:string,userRepository:ReturnType<AuthInter>)=>{
+   const result=await  userRepository.addAss(tutorId,submitUrl)
+}

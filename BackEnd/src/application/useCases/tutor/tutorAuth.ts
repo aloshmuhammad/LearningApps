@@ -92,7 +92,17 @@ export const profileEdit=async(tutor:{TutorId:string,name:string,address:string,
   
   return result
 }
-export const addTask=async(taskUrl:string,studId:string,repositories:ReturnType<Tutorrepointer>)=>{
-    const url= await repositories.taskPush(taskUrl,studId)
+export const addTask=async(taskUrl:string,studId:string,tutorId:string,repositories:ReturnType<Tutorrepointer>)=>{
+    const url= await repositories.taskPush(taskUrl,studId,tutorId)
     return url
+}
+export const getSubmit=async(TutorId:string,repositories:ReturnType<Tutorrepointer>)=>{
+  try{
+    const result=await repositories.getSub(TutorId)
+    return result
+  }catch(error:any){
+    throw error
+  }
+
+  
 }

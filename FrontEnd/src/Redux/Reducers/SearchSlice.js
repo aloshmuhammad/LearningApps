@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const searchSlice = createSlice({
-  name: 'search',
+  name: "search",
   initialState: {
-    query: '',
+    query: "",
     results: [],
   },
   reducers: {
@@ -12,7 +12,7 @@ const searchSlice = createSlice({
       state.results = action.payload.results;
     },
     clearSearch: (state) => {
-      state.query = '';
+      state.query = "";
       state.results = [];
     },
   },

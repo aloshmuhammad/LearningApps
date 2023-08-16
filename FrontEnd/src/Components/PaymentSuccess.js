@@ -1,22 +1,21 @@
-import React, { useEffect } from 'react';
-import { useNavigate} from 'react-router-dom';
-import { Box, Typography, Button } from '@mui/material';
-import {styled} from '@mui/material/styles';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Box, Typography, Button } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 const StyledSuccessContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  minHeight: '100vh',
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: "100vh",
 }));
 
 const StyledSuccessText = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(3),
-  fontSize: '1.5rem',
-  textAlign: 'center',
-  color:'whitesmoke'
-  
+  fontSize: "1.5rem",
+  textAlign: "center",
+  color: "whitesmoke",
 }));
 
 const StyledRedirectButton = styled(Button)(({ theme }) => ({
@@ -24,14 +23,13 @@ const StyledRedirectButton = styled(Button)(({ theme }) => ({
 }));
 
 const PaymentSuccess = () => {
-  const navigate=useNavigate()
-
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const User=JSON.parse(localStorage.getItem('UserInfo'))
+    const User = JSON.parse(localStorage.getItem("UserInfo"));
     const delay = 3000; // 3 seconds
     const timer = setTimeout(() => {
-      navigate('/user/my-courses'); // Replace with your actual course page URL
+      navigate("/user/my-courses"); // Replace with your actual course page URL
     }, delay);
 
     return () => clearTimeout(timer);
@@ -43,7 +41,7 @@ const PaymentSuccess = () => {
       <StyledRedirectButton
         variant="contained"
         color="primary"
-        onClick={() => navigate('/user/my-courses')} // Replace with your actual course page URL
+        onClick={() => navigate("/user/my-courses")} // Replace with your actual course page URL
       >
         Continue to Course
       </StyledRedirectButton>

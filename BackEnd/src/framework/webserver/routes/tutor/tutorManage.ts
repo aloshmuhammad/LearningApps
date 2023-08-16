@@ -25,6 +25,7 @@ const tutorManage=()=>{
     router.get('/buyed-Course/:TutorId',TutorAuthentication as any,controller.getStudents)
     router.get('/get-message/:Cid',controller.getMessages)
     router.post('/task',TutorAuthentication as any,controller.getTask)
+    router.get('/get-submitassignment/:TutorId',TutorAuthentication as any ,controller.getAss)
     
 
 

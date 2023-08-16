@@ -1,14 +1,14 @@
-import React from 'react'
-import Navba from '../../Components/Navba'
-import PaymentSuccess from '../../Components/PaymentSuccess'
+import React from "react";
+import Navba from "../../Components/Navba";
+import PaymentSuccess from "../../Components/PaymentSuccess";
 
 const Success = () => {
   return (
     <div>
-      <Navba/>
-      <PaymentSuccess/>
+      <Navba />
+      <PaymentSuccess />
     </div>
-  )
-}
+  );
+};
 
-export default Success
+export default Success;

@@ -27,6 +27,7 @@ import { fetchMessage } from "../../application/useCases/User/userSignup"
 import { fetchAssignment } from "../../application/useCases/User/userSignup"
 import { checkStatus } from "../../application/useCases/User/userSignup"
 import { checkOrder } from "../../application/useCases/User/userSignup"
+import { assSubmit } from "../../application/useCases/User/userSignup"
 import AWS, { S3 } from 'aws-sdk';
 import Razorpay from "razorpay"
 import crypto from 'crypto'
@@ -294,9 +295,9 @@ const editProfile=asyncHandler(async(req:Request,res:Response)=>{
                   });
                 };
                 
-                    const s3FileLocation = await uploadFileToS3(file);
-                    console.log('S3 File Location:', s3FileLocation);
-                   user.profileUrl=s3FileLocation
+        const s3FileLocation = await uploadFileToS3(file);
+          console.log('S3 File Location:', s3FileLocation);
+         user.profileUrl=s3FileLocation
 
         const updatedData=await profileEdit(user,Authdb)
         res.json({updatedData})
@@ -360,12 +361,46 @@ const checkUser=asyncHandler(async(req:Request,res:Response)=>{
     const userStatus=await checkStatus(token,Authdb)
     res.json(userStatus)
 })
+const submitAss=asyncHandler(async(req:Request,res:Response)=>{
+  const {tutorId}=req.body
+  const file = (req.files as any).file;
+         console.log(file,'po')
+         const s3=new AWS.S3({accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,params:{Bucket:'itsmyproject'}})
+            const uploadFileToS3 = (fileData:any) => {
+                const params = {
+                  Bucket: 'itsmyproject',
+                  Key: `uploads/${fileData.name}`, // Specify the desired location and filename in S3
+                  Body: fileData.data,
+                  ACL:'public-read',
+                  ContentType: fileData.mimetype,
+                };
+                return new Promise<string>((resolve, reject) => {
+                    s3.upload(params, (err: Error, data: AWS.S3.ManagedUpload.SendData) => {
+                      if (err) {
+                        console.log(`Error uploading file: ${err}`);
+                        reject(err);
+                      } else {
+                        console.log(`File uploaded successfully. File location: ${data.Location}`);
+                        
+                        resolve(data.Location);
+                      }
+                    });
+                  });
+                };
+                
+        const s3FileLocation = await uploadFileToS3(file);
+          console.log('S3 File Location:', s3FileLocation);
+          const submitUrl=s3FileLocation
+          await assSubmit(tutorId,submitUrl,Authdb)
+          res.json({status:true})
+})
 
 
 return {
 
 
-
+    submitAss,
     registerUser,
     googlesignup,
     userLogin,

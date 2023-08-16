@@ -1,63 +1,62 @@
-import React, { Children, useState } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import instance from '../../Axios/axios';
-import Grid from '@mui/material/Grid';
-import { useFormik } from 'formik'; 
-import courseSchema from '../Validation/CourseValidation';
-import { toast } from 'react-toastify';
-import ErrorPage from '../Error/ErrorPage';
+import React, { Children, useState } from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import instance from "../../Axios/axios";
+import Grid from "@mui/material/Grid";
+import { useFormik } from "formik";
+import courseSchema from "../Validation/CourseValidation";
+import { toast } from "react-toastify";
+import ErrorPage from "../Error/ErrorPage";
 
 const AddCourse = () => {
-  const [error,setError]=useState('')
-    const {values,errors, handleChange,handleBlur,handleSubmit }=useFormik({
-      initialValues:{
-        title:'',
-        Description:'',
-        price:'',
-
-      },
-      validationSchema:courseSchema,
-      onSubmit:(values)=>{
-        const body={
-            title:values.title,
-            Description:values.Description,
-            price:values.price
-        }
-        console.log(body,'ll')
-        const token=localStorage.getItem('Token')
-        instance.post('/admin/add-course',body,{headers: {
-            Authorization: token
-          }}).then((response)=>{
-            console.log(response)
-           if(response.data.status)toast.success('Course Added Sucessfully')
-        }).catch((err)=>{
-            console.log(err)
-            if(err?.response){
-              setError(err.response.data.error)
-            }
-            else {
-          
-              setError("An error occurred while Adding The Course.");
-            }
-            if (error) {
-    
-              return <ErrorPage message={error} />;
-            }  
-
+  const [error, setError] = useState("");
+  const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
+    initialValues: {
+      title: "",
+      Description: "",
+      price: "",
+    },
+    validationSchema: courseSchema,
+    onSubmit: (values) => {
+      const body = {
+        title: values.title,
+        Description: values.Description,
+        price: values.price,
+      };
+      console.log(body, "ll");
+      const token = localStorage.getItem("Token");
+      instance
+        .post("/admin/add-course", body, {
+          headers: {
+            Authorization: token,
+          },
         })
-      }
-    })
-  
+        .then((response) => {
+          console.log(response);
+          if (response.data.status) toast.success("Course Added Sucessfully");
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err?.response) {
+            setError(err.response.data.error);
+          } else {
+            setError("An error occurred while Adding The Course.");
+          }
+          if (error) {
+            return <ErrorPage message={error} />;
+          }
+        });
+    },
+  });
 
   return (
-    <Box sx={{ maxWidth: 500, mx: 'auto', p: 3 }}>
+    <Box sx={{ maxWidth: 500, mx: "auto", p: 3 }}>
       <Typography variant="h6" gutterBottom>
         Add Course
       </Typography>
-      
+
       <Box component="form" onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -71,7 +70,11 @@ const AddCourse = () => {
               variant="outlined"
               onChange={handleChange}
             />
-            {errors.title ?<p style={{color:'red'}}>{errors.title}</p>:<p></p>}
+            {errors.title ? (
+              <p style={{ color: "red" }}>{errors.title}</p>
+            ) : (
+              <p></p>
+            )}
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -86,9 +89,13 @@ const AddCourse = () => {
               multiline
               rows={4}
             />
-            {errors.Description?<p style={{color:'red'}}>{errors.Description}</p>:<p></p>}
+            {errors.Description ? (
+              <p style={{ color: "red" }}>{errors.Description}</p>
+            ) : (
+              <p></p>
+            )}
           </Grid>
-          
+
           <Grid item xs={12}>
             <TextField
               required
@@ -101,10 +108,14 @@ const AddCourse = () => {
               value={values.price}
               type="number"
             />
-            {errors.price?<p style={{color:'red'}}>{errors.price}</p>:<p></p>}
+            {errors.price ? (
+              <p style={{ color: "red" }}>{errors.price}</p>
+            ) : (
+              <p></p>
+            )}
           </Grid>
         </Grid>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
           <Button type="submit" variant="contained" color="primary">
             Add Course
           </Button>

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import instance from '../Axios/axios';
-import { useRef } from 'react';
+import React, { useState, useEffect } from "react";
+import instance from "../Axios/axios";
+import { useRef } from "react";
 import {
   AppBar,
   Avatar,
@@ -13,37 +13,37 @@ import {
   createTheme,
   styled,
   Paper,
-} from '@mui/material';
+} from "@mui/material";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2196f3',
+      main: "#2196f3",
     },
     secondary: {
-      main: '#4caf50',
+      main: "#4caf50",
     },
     text: {
-      primary: '#ffffff',
+      primary: "#ffffff",
     },
   },
 });
 
 const ProfileContainer = styled(Grid)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  minHeight: '100vh',
-  backgroundColor: '#f5f5f5',
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  minHeight: "100vh",
+  backgroundColor: "#f5f5f5",
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   maxWidth: 400,
-  boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)',
+  boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)",
 }));
 
 const AvatarStyled = styled(Avatar)(({ theme }) => ({
@@ -51,49 +51,49 @@ const AvatarStyled = styled(Avatar)(({ theme }) => ({
   height: theme.spacing(15),
   marginBottom: theme.spacing(2),
   border: `4px solid ${theme.palette.primary.main}`,
-  cursor: 'pointer',
+  cursor: "pointer",
 }));
 
 const NameStyled = styled(Typography)(({ theme }) => ({
-  fontWeight: 'bold',
+  fontWeight: "bold",
   marginBottom: theme.spacing(1),
-  color: 'black',
-  fontSize: '24px',
+  color: "black",
+  fontSize: "24px",
 }));
 
 const InfoStyled = styled(Typography)(({ theme }) => ({
-  color: 'black',
-  fontSize: '18px',
+  color: "black",
+  fontSize: "18px",
   marginBottom: theme.spacing(1),
 }));
 
-const EditButtons = styled('div')(({ theme }) => ({
+const EditButtons = styled("div")(({ theme }) => ({
   marginTop: theme.spacing(2),
-  '& > button': {
+  "& > button": {
     marginRight: theme.spacing(2),
-    color: 'white',
-    borderColor: 'white',
+    color: "white",
+    borderColor: "white",
   },
 }));
 
 const UserProfile = () => {
   const [editing, setEditing] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phoneNo, setPhoneNo] = useState('');
-  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [email, setEmail] = useState("");
 
   const [info, setInfo] = useState([]);
-  
-  const profilePictureInputRef = useRef(null)
+
+  const profilePictureInputRef = useRef(null);
   const [profilePicture, setProfilePicture] = useState(null);
 
   const handleEditClick = () => {
     setEditing(true);
-    setFirstName(info?.firstName || '');
-    setLastName(info?.lastName || '');
-    setEmail(info?.email || '');
-    setPhoneNo(info?.phoneNo || '');
+    setFirstName(info?.firstName || "");
+    setLastName(info?.lastName || "");
+    setEmail(info?.email || "");
+    setPhoneNo(info?.phoneNo || "");
   };
   const handleProfilePictureClick = () => {
     if (profilePictureInputRef.current) {
@@ -107,24 +107,23 @@ const UserProfile = () => {
 
   const handleSaveClick = () => {
     setEditing(false);
-    const token = localStorage?.getItem('userToken');
-    let User = JSON.parse(localStorage.getItem('UserInfo'));
+    const token = localStorage?.getItem("userToken");
+    let User = JSON.parse(localStorage.getItem("UserInfo"));
     const formData = new FormData();
-    formData.append('UserId', User._id);
-    formData.append('firstName', firstName);
-    formData.append('lastName', lastName);
-    formData.append('email', email);
-    formData.append('phoneNo', phoneNo);
+    formData.append("UserId", User._id);
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("email", email);
+    formData.append("phoneNo", phoneNo);
     if (profilePicture) {
-        formData.append('profilePicture', profilePicture);
-      }
-   
+      formData.append("profilePicture", profilePicture);
+    }
 
     instance
-      .put('/auth/profile-edit', formData, {
+      .put("/auth/profile-edit", formData, {
         headers: {
           Authorization: token,
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
@@ -142,8 +141,8 @@ const UserProfile = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('userToken');
-    const User = JSON.parse(localStorage.getItem('UserInfo'));
+    const token = localStorage.getItem("userToken");
+    const User = JSON.parse(localStorage.getItem("UserInfo"));
     instance
       .get(`/auth/get-profile/${User._id}`, {
         headers: {
@@ -160,8 +159,6 @@ const UserProfile = () => {
       });
   }, []);
 
-
-
   return (
     <div>
       <ThemeProvider theme={theme}>
@@ -171,7 +168,7 @@ const UserProfile = () => {
               <AvatarStyled
                 alt="User Profile Picture"
                 src={info?.profileUrl}
-                onClick={ handleProfilePictureClick}
+                onClick={handleProfilePictureClick}
               />
               <Grid container justifyContent="center">
                 <Grid item xs={12}>
@@ -186,7 +183,7 @@ const UserProfile = () => {
                         className="name"
                         sx={{ mt: 2 }}
                         InputProps={{
-                          style: { color: 'black' },
+                          style: { color: "black" },
                         }}
                       />
                       <TextField
@@ -198,7 +195,7 @@ const UserProfile = () => {
                         className="bio"
                         sx={{ mt: 2 }}
                         InputProps={{
-                          style: { color: 'black' },
+                          style: { color: "black" },
                         }}
                       />
                       <TextField
@@ -210,7 +207,7 @@ const UserProfile = () => {
                         className="bio"
                         sx={{ mt: 2 }}
                         InputProps={{
-                          style: { color: 'black' },
+                          style: { color: "black" },
                         }}
                       />
                       <TextField
@@ -222,17 +219,17 @@ const UserProfile = () => {
                         className="bio"
                         sx={{ mt: 2 }}
                         InputProps={{
-                          style: { color: 'black' },
+                          style: { color: "black" },
                         }}
                       />
                       <input
-          ref={profilePictureInputRef} // Attach the ref to the input element
-          id="profilePictureInput"
-          type="file"
-          accept="image/*"
-          style={{ display: 'none' }}
-          onChange={handleProfilePictureChange}
-        />
+                        ref={profilePictureInputRef} // Attach the ref to the input element
+                        id="profilePictureInput"
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={handleProfilePictureChange}
+                      />
                     </>
                   ) : (
                     <>
@@ -240,14 +237,20 @@ const UserProfile = () => {
                         {info?.firstName} {info?.lastName}
                       </NameStyled>
                       <InfoStyled variant="subtitle1">{info?.email}</InfoStyled>
-                      <InfoStyled variant="subtitle1">{info?.phoneNo}</InfoStyled>
+                      <InfoStyled variant="subtitle1">
+                        {info?.phoneNo}
+                      </InfoStyled>
                     </>
                   )}
                 </Grid>
                 <Grid item xs={12}>
                   {editing ? (
                     <EditButtons>
-                      <Button variant="contained" color="primary" onClick={handleSaveClick}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSaveClick}
+                      >
                         Save
                       </Button>
                       <Button variant="outlined" onClick={handleCancelClick}>
@@ -255,7 +258,11 @@ const UserProfile = () => {
                       </Button>
                     </EditButtons>
                   ) : (
-                    <Button variant="outlined" color="primary" onClick={handleEditClick}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleEditClick}
+                    >
                       Edit Profile
                     </Button>
                   )}

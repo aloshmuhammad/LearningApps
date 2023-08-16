@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import FadeLoader from "react-spinners/FadeLoader";
 
 const override = {
@@ -12,7 +12,14 @@ const LazyLoad = () => {
   const [color, setColor] = useState("#ffffff");
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
       <FadeLoader
         color={color}
         loading={loading}

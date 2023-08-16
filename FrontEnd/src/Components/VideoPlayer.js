@@ -1,8 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 
-import { IconButton, Tooltip } from '@mui/material';
-import { Fullscreen, FullscreenExit, PlayArrow, Pause } from '@mui/icons-material';
-
+import { IconButton, Tooltip } from "@mui/material";
+import {
+  Fullscreen,
+  FullscreenExit,
+  PlayArrow,
+  Pause,
+} from "@mui/icons-material";
 
 const VideoPlayer = ({ videoUrl }) => {
   const videoRef = useRef(null);
@@ -36,16 +40,12 @@ const VideoPlayer = ({ videoUrl }) => {
   };
 
   return (
-    <div style={{ position: 'relative', maxWidth: '800px', margin: '0 auto' }}>
-      <video
-        ref={videoRef}
-        controls
-        style={{ width: '100%', height: 'auto' }}
-      >
+    <div style={{ position: "relative", maxWidth: "800px", margin: "0 auto" }}>
+      <video ref={videoRef} controls style={{ width: "100%", height: "auto" }}>
         <source src={videoUrl} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+      <div style={{ position: "absolute", top: "10px", right: "10px" }}>
         <Tooltip title="Play">
           <IconButton onClick={handlePlay}>
             <PlayArrow />

@@ -1,28 +1,23 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import instance from '../../Axios/axios';
-import { toast } from 'react-toastify';
-import {
-  Container,
-  Paper,
-  Typography,
-  TextField,
-  Button,
-} from '@mui/material';
-import { styled } from '@mui/system';
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import instance from "../../Axios/axios";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { Container, Paper, Typography, TextField, Button } from "@mui/material";
+import { styled } from "@mui/system";
 
 const StyledContainer = styled(Container)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: '100vh',
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100vh",
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
-  maxWidth: '400px',
-  width: '100%',
-  textAlign: 'center',
+  maxWidth: "400px",
+  width: "100%",
+  textAlign: "center",
 }));
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
@@ -33,8 +28,9 @@ const StyledButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
 }));
 
-const Task=()=> {
-    const {studId}=useParams()
+const Task = () => {
+  const { studId } = useParams();
+  let Tutor = useSelector((state) => state.tutorInfo.tutor);
   const [taskFile, setTaskFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -44,33 +40,33 @@ const Task=()=> {
   const handleUpload = () => {
     if (!taskFile) return;
 
-    
-      const formData = new FormData();
-      formData.append('taskFile', taskFile);
-      formData.append('studId',studId)
-      const token = localStorage.getItem('Token');
-        const Token = {
-          token: token
-        }
-      
-         instance.post('/tutor/task', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: token
-        },
-      }).then((res)=>{
-        console.log(res)
-        if(res?.data?.status){
-            toast.success('Task Added Successfully')
-        }
-      }).catch((err)=>{
-        console.log(err)
-      })
+    const formData = new FormData();
+    formData.append("taskFile", taskFile);
+    formData.append("studId", studId);
+    formData.append("tutorId", Tutor._id);
+    const token = localStorage.getItem("Token");
 
-    
-     
-    }
-  
+    const Token = {
+      token: token,
+    };
+
+    instance
+      .post("/tutor/task", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        if (res?.data?.status) {
+          toast.success("Task Added Successfully");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <StyledContainer>
@@ -94,6 +90,6 @@ const Task=()=> {
       </StyledPaper>
     </StyledContainer>
   );
-}
+};
 
 export default Task;

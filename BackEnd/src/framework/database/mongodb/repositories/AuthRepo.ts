@@ -9,6 +9,7 @@ import { UserEntity } from "../../../../entity/user";
 import Order from "../model/orderSchema";
 import Message from "../model/MessageSchema";
 import Task from "../model/TaskSchema";
+import Submit from "../model/SubmissionSchema";
 import { validateLocaleAndSetLanguage } from "typescript";
 import { CloudHSM } from "aws-sdk";
 export const userRepositoryMongo=()=>{
@@ -194,8 +195,15 @@ export const userRepositoryMongo=()=>{
           return({existOrder:true})
         }
   }
+  const addAss=async(tutorId:string,submitUrl:string)=>{
+  const data={
+    tutorId:tutorId,
+    submitUrl:submitUrl
+  }
+  await Submit.create(data)
+  }
   
   
-    return {findbyEmail,getStatus,existOrder,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder,getData,updateProfile,searchRepo,getTutor,messageSave,getMessage,getAssignment}
+    return {findbyEmail,getStatus,existOrder,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder,getData,addAss,updateProfile,searchRepo,getTutor,messageSave,getMessage,getAssignment}
 }
 export type UserRepositoryMongo=typeof userRepositoryMongo

@@ -1,14 +1,14 @@
-import React from 'react'
-import Search from '../../Components/Search'
-import Navba from '../../Components/Navba'
+import React from "react";
+import Search from "../../Components/Search";
+import Navba from "../../Components/Navba";
 
 const SearchValues = () => {
   return (
     <div>
-     <Navba/>
-     <Search/> 
+      <Navba />
+      <Search />
     </div>
-  )
-}
+  );
+};
 
-export default SearchValues
+export default SearchValues;

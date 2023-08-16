@@ -18,6 +18,7 @@ const getMessage=async(cId:string)=>await repositories.getMessage(cId)
 const getAssignment=async(userId:string)=>await repositories.getAssignment(userId)
 const getStatus=async(userId:string)=>await repositories.getStatus(userId)
 const existOrder=async(User:string,course:string)=>await repositories.existOrder(User,course)
-return {findbyEmail,existOrder,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder,getData,updateProfile,searchRepo,getTutor,messageSave,getMessage,getAssignment,getStatus}
+const addAss=async(tutorId:string,submitUrl:string)=>await repositories.addAss(tutorId,submitUrl)
+return {findbyEmail,existOrder,addUser,addUserG,phoneNumberVerify,getCourses,getCourse,orderSet,getOrder,getData,updateProfile,searchRepo,getTutor,messageSave,getMessage,getAssignment,getStatus,addAss}
 }
 export type AuthInter=typeof authInter

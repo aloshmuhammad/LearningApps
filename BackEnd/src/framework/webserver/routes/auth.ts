@@ -34,6 +34,7 @@ router.get('/tutors-list/:userId',Authentication as any,controller.myTutors)
 router.get('/get-message/:cId',controller.getMessages)
 router.get('/get-assignment/:userId',Authentication as any,controller.getAssignment)
 router.get('/check-user/:token',Authentication as any,controller.checkUser)
+router.post('/submit-assignment',controller.submitAss)
 
 
 

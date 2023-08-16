@@ -11,7 +11,8 @@ export const tutorrepointer=(repositories:ReturnType<Tutorrepoimpl>)=>{
     const getData=async(tutorId:string)=>await repositories.getData(tutorId)
     const updateProfile=async(tutor:{TutorId:string,name:string,address:string,email:string,highestqualification:string,age:string,profileUrl:string})=>await repositories.updateProfile(tutor)
     const getMessage=async(Cid:string)=>await repositories.getMessage(Cid)
-    const taskPush=async(taskUrl:string,studId:string)=>await repositories.taskPush(taskUrl,studId)
+    const taskPush=async(taskUrl:string,studId:string,tutorId:string)=>await repositories.taskPush(taskUrl,studId,tutorId)
+    const getSub=async(TutorId:string)=>await repositories.getSub(TutorId)
   
     return{
         findbyEmailTutor,
@@ -25,6 +26,7 @@ export const tutorrepointer=(repositories:ReturnType<Tutorrepoimpl>)=>{
         getData,
         getMessage,
         taskPush,
+        getSub
     
        
       

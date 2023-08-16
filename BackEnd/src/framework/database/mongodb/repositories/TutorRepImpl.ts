@@ -8,6 +8,7 @@ import { AppliedTutorEntity } from "../../../../entity/appliedtutor";
 import Order from "../model/orderSchema";
 import Message from "../model/MessageSchema";
 import Task from "../model/TaskSchema";
+import Submit from "../model/SubmissionSchema";
 export const tutorrepoimpl=()=>{
    
         const findbyEmailTutor=async(email:string)=>{
@@ -134,15 +135,20 @@ export const tutorrepoimpl=()=>{
     });
    return message
  }
- const taskPush=async(taskUrl:string,studId:string)=>{
+ const taskPush=async(taskUrl:string,studId:string,tutorId:string)=>{
   const data={
     taskUrl:taskUrl,
-    studId:studId
+    studId:studId,
+    tutorId:tutorId
   }
    const url=await Task.create(data)
    return url
- }
  
-    return {findbyEmailTutor,addTutorApply,findTutors,tutorCourse,addUrl,getVideo,getTcourse,updateProfile,getData,getMessage,taskPush}
+ }
+ const getSub=async(TutorId:string)=>{
+  const result=await Submit.find({tutorId:TutorId})
+  return result
+ }
+    return {findbyEmailTutor,getSub,addTutorApply,findTutors,tutorCourse,addUrl,getVideo,getTcourse,updateProfile,getData,getMessage,taskPush}
 }
 export type Tutorrepoimpl=typeof tutorrepoimpl
