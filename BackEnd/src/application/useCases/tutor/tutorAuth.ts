@@ -87,3 +87,12 @@ export const profileEdit=async(tutor:{TutorId:string,name:string,address:string,
          throw error
        }
  }
+ export const fetchMessage=async(Cid:string,repositories:ReturnType<Tutorrepointer>)=>{
+  const result=await repositories.getMessage(Cid)
+  
+  return result
+}
+export const addTask=async(taskUrl:string,studId:string,repositories:ReturnType<Tutorrepointer>)=>{
+    const url= await repositories.taskPush(taskUrl,studId)
+    return url
+}

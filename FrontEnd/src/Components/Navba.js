@@ -169,15 +169,15 @@ const Search = styled('div')(({ theme }) => ({
                   <MenuItem onClick={handleMenuClose}>Home</MenuItem>
                   {userToken ? (
                     <>
-                    <MenuItem onClick={handleMenuClose}>
-                      {userInfo.firstName}
+                    <MenuItem onClick={handleMenuClose} component={RouterLink} to="/">
+                      {userInfo.firstName} 
                     </MenuItem>
                     <MenuItem onClick={handleMenuClose} component={RouterLink} to="/user/my-courses"> My Courses</MenuItem>
                     
                     </>
                     
                   ) : (
-                    <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+                    <MenuItem onClick={handleMenuClose} component={RouterLink} to="/user/my-profile">Profile</MenuItem>
                     
                   )}
                   <MenuItem onClick={handleMenuClose}>Courses</MenuItem>
@@ -191,10 +191,10 @@ const Search = styled('div')(({ theme }) => ({
                 </Menu>
               ) : (
                 <div style={{ display: 'flex' }}>
-                  <MenuItem key='home'>Home</MenuItem>
+                  <MenuItem key='home' component={RouterLink} to="/">Home</MenuItem>
                   {userToken ? (
                     <>
-                    <MenuItem key='profile'>{userInfo.firstName}</MenuItem>
+                    <MenuItem key='profile'  component={RouterLink} to="/user/profile">{userInfo.firstName}</MenuItem>
                     <MenuItem   key='my-courses'  component={RouterLink} to="/user/my-courses">My-Courses</MenuItem>
                     </>
                   ) : (

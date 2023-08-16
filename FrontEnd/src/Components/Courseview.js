@@ -11,9 +11,11 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Paypalpayment from './Paypalpayment';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
 import ErrorPage from './Error/ErrorPage';
 
 const Courseview = () => {
+  const navigate=useNavigate()
   const { courseId } = useParams();
   const [course, setCourse] = useState([]);
   const [error,setError]=useState('')
@@ -47,12 +49,15 @@ const Courseview = () => {
         instance.post('/auth/verify-payment',{data},{headers: {
           Authorization: token
         }}).then((res)=>{
-          console.log(res,'oi')
+       
+       
           if(res?.data?.status){
             setBuy(true)
             setOrders(res?.data?.createOrder)
             console.log(orders,'ord')
             toast.success('Course purchased Successfully')
+            navigate('/user/success')
+
 
           }
         }).catch((err)=>{
@@ -81,11 +86,19 @@ const Courseview = () => {
     
     const data={price:price*100}
     const token=localStorage.getItem('userToken')
+    const User=JSON.parse(localStorage.getItem('UserInfo'))
+    data.course=courseId
+    data.User=User._id
+
     instance.post('/auth/capture-order',data,{headers: {
       Authorization: token
     }}).then((response)=>{
-      console.log(response)
+     if(response?.data?.existOrder){
+      toast.error('Course already buyed')
+     }else{
       handleOpenRazorpay(response?.data)
+     }
+      
     }).catch((err)=>{
       console.log(err)
     })

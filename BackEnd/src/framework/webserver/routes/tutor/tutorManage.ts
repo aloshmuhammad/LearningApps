@@ -23,6 +23,8 @@ const tutorManage=()=>{
     router.get('/get-profile/:TutorId',TutorAuthentication as any ,controller.myProfile)
     router.put('/profile-edit',TutorAuthentication as any,controller.editProfile)
     router.get('/buyed-Course/:TutorId',TutorAuthentication as any,controller.getStudents)
+    router.get('/get-message/:Cid',controller.getMessages)
+    router.post('/task',TutorAuthentication as any,controller.getTask)
     
 
 

@@ -15,6 +15,7 @@ export const adminRepoInter=(repositories:ReturnType<AdminRepoImpl>)=>{
     const addedCourse=async(course:CourseEntity)=>await repositories.addedCourse(course)
     const getCourseID=async(course:string)=>await repositories.getCourseID(course)
     const getOrderCourse=async()=>await repositories.getOrderCourse()
+    const pushTutor=async(CourseId:string,tutorId:string)=>await repositories.pushTutor(CourseId,tutorId)
     return{
         findbyEmail,
         findUsers,
@@ -27,7 +28,8 @@ export const adminRepoInter=(repositories:ReturnType<AdminRepoImpl>)=>{
         AppliedStatus,
         addedCourse,
         getCourseID,
-        getOrderCourse
+        getOrderCourse,
+        pushTutor
     }
 }
 export type AdminRepoInter=typeof adminRepoInter

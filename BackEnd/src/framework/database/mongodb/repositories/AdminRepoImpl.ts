@@ -85,7 +85,8 @@ export const adminRepoImpl=()=>{
                 password:admittedTutor.getPassword(),
                 course:admittedTutor.getCourse()
                }
-                 await Tutor.create(newTutor)
+                const result= await Tutor.create(newTutor)
+                return result
         }catch(error:any){
             throw new Error('Error Occured During Recruiting The Tutor')
         }
@@ -138,7 +139,27 @@ export const adminRepoImpl=()=>{
         }
      
     }
+    const pushTutor=async(CourseId:string,tutorId:string)=>{
+     
+        try {
+            const courses = await Course.findByIdAndUpdate(
+              CourseId,
+              {
+                $push: {
+                  tutor: tutorId,
+                },
+              },
+              {
+                new: true,
+              },
+            )
+            console.log(courses, 'ooi')
+          } catch (error: any) {
+            throw new Error('Error Occured During Fetching The Buyed Courses')
+          }
+        
+    }
 
-    return {findbyEmail,findUsers,BlockUser,findTutors,BlockTutor,findCourse,findAppliedTutors,addTutor,AppliedStatus,addedCourse,getCourseID,getOrderCourse}
+    return {findbyEmail,findUsers,BlockUser,findTutors,BlockTutor,findCourse,findAppliedTutors,addTutor,AppliedStatus,addedCourse,getCourseID,getOrderCourse,pushTutor}
 }
 export type AdminRepoImpl=typeof adminRepoImpl

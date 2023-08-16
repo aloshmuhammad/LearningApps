@@ -153,5 +153,31 @@ export const searchItem=async(searchQuery:any,userRepository:ReturnType<AuthInte
       }
    
 }
-
-
+export const getCourseTutor=async(userId:string,userRepository:ReturnType<AuthInter>)=>{
+    try{
+        
+        const result=await userRepository.getTutor(userId)
+        return result
+    }catch(error:any){
+        throw error
+      }
+}
+export const saveMessage=async(message:{isFrom:string,content:string,from:string,reciever:string,commonId:string},userRepository:ReturnType<AuthInter>)=>{
+    await userRepository.messageSave(message)
+}
+export const fetchMessage=async(cId:string,userRepository:ReturnType<AuthInter>)=>{
+    const result=await userRepository.getMessage(cId)
+    return result
+}
+export const fetchAssignment=async(userId:string,userRepository:ReturnType<AuthInter>)=>{
+     const result=await userRepository.getAssignment(userId)
+     return result
+}
+export const checkStatus=async(userId:string,userRepository:ReturnType<AuthInter>)=>{
+    const result=await userRepository.getStatus(userId)
+    return result
+}
+export const checkOrder=async(User:string,course:string,userRepository:ReturnType<AuthInter>)=>{
+    const result=await userRepository.existOrder(User,course)
+    return result
+}

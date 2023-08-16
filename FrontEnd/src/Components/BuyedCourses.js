@@ -33,7 +33,7 @@ const BuyedCourses = () => {
       }})
       .then((res) => {
         console.log(res);
-        setMycourse(res?.data?.myCourse?.courses);
+         setMycourse(res?.data?.myCourse);
       })
       .catch((err) => {
         console.log(err);
@@ -43,15 +43,15 @@ const BuyedCourses = () => {
   return (
     <Container>
       <Grid container spacing={3} justifyContent="center">
-        {mycourse.map((course) => (
+        {mycourse && mycourse.map((course) => (
           <Grid key={course._id} item xs={12} sm={6} md={4}>
             <StyledPaper>
-              <Title variant="h6">{course.title}</Title>
-              <Typography variant="body1">{course.Description}</Typography>
-              <Typography variant="body1">Price: ${course.price}</Typography>
+              <Title variant="h6">{course.courses[0].title}</Title>
+              <Typography variant="body1">{course.courses[0].Description}</Typography>
+              <Typography variant="body1">Price: ${course.courses[0].price}</Typography>
               {/* Assuming each course has a video */}
-              {course.courseVideo && course.courseVideo.length > 0 && (
-                <VideoPlayer videoUrl={course.courseVideo[0]} />
+              {course.courses[0].courseVideo && course.courses[0].courseVideo.length > 0 && (
+                <VideoPlayer videoUrl={course.courses[0].courseVideo[0]} />
               )}
             </StyledPaper>
           </Grid>

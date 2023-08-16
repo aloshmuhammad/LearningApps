@@ -6,7 +6,8 @@ import instance from '../../Axios/axios';
 import { useSelector } from 'react-redux';
 import './UsersList.css'
 import ErrorPage from '../Error/ErrorPage';
-
+import { Link } from 'react-router-dom';
+import './UsersList.css'
 
 
 const BuyedCourseList = () => {
@@ -35,6 +36,36 @@ const columns = [
       sort: false,
     },
   },
+  {
+    name: '_id',
+    label: 'Message',
+    options: {
+      customBodyRender: (value, tableMeta) => {
+        const studId = data[tableMeta.rowIndex]._id;
+        return (
+          <Link to={`/tutor/tutor-chat/${studId}`} className="message-button">
+            Message
+          </Link>
+        );
+      },
+    },
+  },
+  {
+    name: '_id',
+    label: 'Give Tasks',
+    options: {
+      customBodyRender: (value, tableMeta) => {
+        const studId = data[tableMeta.rowIndex]._id;
+        return (
+          <Link to={`/tutor/give-tasks/${studId}`} className="task-button">
+            Give Tasks
+          </Link>
+        );
+      },
+    },
+  },
+  
+
   // {
   //   name: 'price',
   //   label: 'Price',
@@ -97,6 +128,7 @@ useEffect(() => {
         Authorization: token
       }})
     .then((response) => {
+      console.log(response)
         const{data}=response
         setData(data)
        

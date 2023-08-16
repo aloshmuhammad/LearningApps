@@ -114,7 +114,8 @@ export const emailRecruit = async (email:string,password:string) => {
     try{
       const tutorDetails:TutorEntity=tutorEntity(admittedTutor)
 
-      await Repository.addTutor(tutorDetails)
+      const tutorDet=await Repository.addTutor(tutorDetails)
+      return tutorDet
     }catch(error:any){
       throw error
     }
@@ -161,4 +162,11 @@ export const emailRecruit = async (email:string,password:string) => {
       throw error
     }
     
+  })
+  export const tutorPush=(async(Repository:ReturnType<AdminRepoInter>,CourseId:string,tutorId:string)=>{
+      try{
+        const  result=await Repository.pushTutor(CourseId,tutorId)
+      }catch(error:any){
+        throw error
+      }
   })

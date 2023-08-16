@@ -7,7 +7,7 @@ const courseSchema=new Schema({
     },
     tutor:{
        type:Schema.Types.ObjectId,
-       ref:'Tutor'
+       ref:'tutor'
     },
     Description:{
         type:String,

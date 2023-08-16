@@ -6,6 +6,8 @@ import Tutor from "../model/tutorSchema";
 import TutorApplyS from "../model/tutorapplySchem";
 import { AppliedTutorEntity } from "../../../../entity/appliedtutor";
 import Order from "../model/orderSchema";
+import Message from "../model/MessageSchema";
+import Task from "../model/TaskSchema";
 export const tutorrepoimpl=()=>{
    
         const findbyEmailTutor=async(email:string)=>{
@@ -53,10 +55,12 @@ export const tutorrepoimpl=()=>{
     const getTcourse=async(TutorId:string)=>{
         try{
             const data=await Tutor.findById(TutorId).populate('course')
+            console.log(data,'dta')
            
     if (data) {
         if (Array.isArray(data.course)) { // Check if data.course is an array
             const courses = data.course as Array<any>; // Cast to array of any type
+           
     
             if (courses.length > 0) {
               const courseIds = courses.map(course => course._id); // Extract _id values
@@ -70,8 +74,10 @@ export const tutorrepoimpl=()=>{
                     return Users
                 })
                 const ordersWithUsers = await Promise.all(OrderPromises);
+                console.log(ordersWithUsers,'ord')
                 return ordersWithUsers
-              
+             
+  
               
                 
              }
@@ -121,6 +127,22 @@ export const tutorrepoimpl=()=>{
        throw new Error('Error occured during Updating The Profile')
      }
    }
-    return {findbyEmailTutor,addTutorApply,findTutors,tutorCourse,addUrl,getVideo,getTcourse,updateProfile,getData}
+
+   const getMessage=async(Cid:string)=>{
+    const message = await Message.find({
+    commonId:Cid
+    });
+   return message
+ }
+ const taskPush=async(taskUrl:string,studId:string)=>{
+  const data={
+    taskUrl:taskUrl,
+    studId:studId
+  }
+   const url=await Task.create(data)
+   return url
+ }
+ 
+    return {findbyEmailTutor,addTutorApply,findTutors,tutorCourse,addUrl,getVideo,getTcourse,updateProfile,getData,getMessage,taskPush}
 }
 export type Tutorrepoimpl=typeof tutorrepoimpl

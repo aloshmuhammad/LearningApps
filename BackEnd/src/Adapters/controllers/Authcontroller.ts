@@ -21,6 +21,12 @@ import { getMycourse } from "../../application/useCases/User/userSignup"
 import { getDetails } from "../../application/useCases/User/userSignup"
 import { profileEdit } from "../../application/useCases/User/userSignup"
 import { searchItem } from "../../application/useCases/User/userSignup"
+import { getCourseTutor } from "../../application/useCases/User/userSignup"
+import { saveMessage } from "../../application/useCases/User/userSignup"
+import { fetchMessage } from "../../application/useCases/User/userSignup"
+import { fetchAssignment } from "../../application/useCases/User/userSignup"
+import { checkStatus } from "../../application/useCases/User/userSignup"
+import { checkOrder } from "../../application/useCases/User/userSignup"
 import AWS, { S3 } from 'aws-sdk';
 import Razorpay from "razorpay"
 import crypto from 'crypto'
@@ -169,6 +175,13 @@ const singleCourse=asyncHandler(async(req:Request,res:Response)=>{
 })
 const RazorPayment=asyncHandler(async(req:Request,res:Response)=>{
     try{
+        console.log(req.body,'oppo')
+        const {User}=req.body
+        const {course}=req.body
+        const orderExist=await checkOrder(User,course,Authdb)
+        if(orderExist){
+            res.json(orderExist)
+        }
         var instance = new Razorpay({ key_id: 'rzp_test_PuWlV36hk7Gp53', key_secret: 'Jt87jAYeL41nmg3goQMmK827' })
 
         var options = {
@@ -178,10 +191,11 @@ const RazorPayment=asyncHandler(async(req:Request,res:Response)=>{
         };
         instance.orders.create(options, function(err, order) {
             if(err){
-                res.send({code:500})
+                res.status(500).json({ message: "An error occurred", error: 'Error occurred during Payment' });
+            } else {
+                res.status(200).json({ code: 200, data: order });
             }
-            res.send({code:200,data:order})
-          console.log(order);
+            console.log(order);
         });
     }catch(error:any){
           
@@ -305,6 +319,48 @@ const searchFn=asyncHandler(async(req:Request,res:Response)=>{
    
 
 })
+const myTutors=asyncHandler(async(req:Request,res:Response)=>{
+    try{
+        const {userId}=req.params
+        console.log(req.params,'op')
+        const Mytutors=await getCourseTutor(userId,Authdb)
+        res.json(Mytutors)
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+
+
+
+})
+const messageSave=async(message:{isFrom:string,content:string,reciever:string,from:string,commonId:string})=>{
+   
+   await saveMessage(message,Authdb)
+}
+const getMessages=asyncHandler(async(req:Request,res:Response)=>{
+    try{
+        const {cId}=req.params
+      
+        const messages=await fetchMessage(cId,Authdb)
+
+        res.json(messages)
+    }catch(error:any){
+          
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+   
+})
+const getAssignment=asyncHandler(async(req:Request,res:Response)=>{
+    const{userId}=req.params
+    const assignment=await fetchAssignment(userId,Authdb)
+    res.json(assignment)
+})
+const checkUser=asyncHandler(async(req:Request,res:Response)=>{
+    const{token}=req.params
+    const userStatus=await checkStatus(token,Authdb)
+    res.json(userStatus)
+})
+
 
 return {
 
@@ -324,7 +380,12 @@ return {
     myCourses,
     myProfile,
     editProfile,
-    searchFn
+    searchFn,
+    myTutors,
+    messageSave,
+    getMessages,
+    getAssignment,
+    checkUser
 
 }
 }

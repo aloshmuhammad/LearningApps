@@ -14,6 +14,7 @@ import { statusApplied } from "../../application/useCases/Admin/adminSignin"
 import { courseAdd } from "../../application/useCases/Admin/adminSignin"
 import { getCourse } from "../../application/useCases/Admin/adminSignin"
 import { getBcourse } from "../../application/useCases/Admin/adminSignin"
+import { tutorPush } from "../../application/useCases/Admin/adminSignin"
 const AdminManageController=(adminrepoImplement:AdminRepoImpl,adminrepoInter:AdminRepoInter)=>{
 
     const adminMange=adminrepoInter(adminrepoImplement())
@@ -100,15 +101,30 @@ const AdminManageController=(adminrepoImplement:AdminRepoImpl,adminrepoInter:Adm
            admittedTutor.password=password
            const course=admittedTutor.course
            const getCourseId=await getCourse(adminMange,course)
-           console.log(getCourseId,'loh')
+           var CourseId=getCourseId?._id.toString()
 
            if(getCourseId!=null){
             admittedTutor.course=getCourseId._id.toString()
            }
           
            const admitDone=await admitProcess(adminMange,admittedTutor)
-           const appliedStatus=await statusApplied(adminMange,req.body._id)
-           res.json(admitDone)
+           console.log(admitDone,'oki')
+           if(admitDone){
+            
+            const tutorId=admitDone._id.toString()
+           
+            if(CourseId!=undefined){
+               
+                const pushTutor=await tutorPush(adminMange,CourseId,tutorId)
+                const appliedStatus=await statusApplied(adminMange,req.body._id)
+                res.json(admitDone)
+            }
+           
+           }
+        
+           
+           
+         
         }catch(error:any){
           
             res.status(500).json({ message: "An error occurred", error: error.message });

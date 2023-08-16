@@ -10,6 +10,9 @@ export const tutorrepointer=(repositories:ReturnType<Tutorrepoimpl>)=>{
     const getTcourse=async(TutorId:string)=>await repositories.getTcourse(TutorId)
     const getData=async(tutorId:string)=>await repositories.getData(tutorId)
     const updateProfile=async(tutor:{TutorId:string,name:string,address:string,email:string,highestqualification:string,age:string,profileUrl:string})=>await repositories.updateProfile(tutor)
+    const getMessage=async(Cid:string)=>await repositories.getMessage(Cid)
+    const taskPush=async(taskUrl:string,studId:string)=>await repositories.taskPush(taskUrl,studId)
+  
     return{
         findbyEmailTutor,
         addTutorApply,
@@ -19,7 +22,11 @@ export const tutorrepointer=(repositories:ReturnType<Tutorrepoimpl>)=>{
         getVideo,
         getTcourse,
         updateProfile,
-        getData
+        getData,
+        getMessage,
+        taskPush,
+    
+       
       
     }
 }
