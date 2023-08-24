@@ -6,7 +6,8 @@ const messageSchema = new Schema({
     createdAt: { type: Date, default: Date.now },
     reciever: { type: String ,required: true},
     from:{type:String,required:true},
-    commonId:{type:String,required:true}
+    commonId:{type:String,required:true},
+    time: { type: String, default: "" }
 
 })
 

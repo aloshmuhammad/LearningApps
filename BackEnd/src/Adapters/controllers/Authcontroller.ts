@@ -334,7 +334,7 @@ const myTutors=asyncHandler(async(req:Request,res:Response)=>{
 
 
 })
-const messageSave=async(message:{isFrom:string,content:string,reciever:string,from:string,commonId:string})=>{
+const messageSave=async(message:{isFrom:string,content:string,reciever:string,from:string,commonId:string,time:string})=>{
    
    await saveMessage(message,Authdb)
 }

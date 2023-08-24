@@ -168,7 +168,7 @@ export const userRepositoryMongo=()=>{
         throw new Error('Error occurred during fetching the my tutors');
     }
   };
-  const messageSave=async(message:{isFrom:string,content:string,from:string,reciever:string,commonId:string})=>{
+  const messageSave=async(message:{isFrom:string,content:string,from:string,reciever:string,commonId:string,time:string})=>{
      await Message.create(message)
   }
   const getMessage=async(cId:string)=>{

@@ -162,7 +162,7 @@ export const getCourseTutor=async(userId:string,userRepository:ReturnType<AuthIn
         throw error
       }
 }
-export const saveMessage=async(message:{isFrom:string,content:string,from:string,reciever:string,commonId:string},userRepository:ReturnType<AuthInter>)=>{
+export const saveMessage=async(message:{isFrom:string,content:string,from:string,reciever:string,commonId:string,time:string},userRepository:ReturnType<AuthInter>)=>{
     await userRepository.messageSave(message)
 }
 export const fetchMessage=async(cId:string,userRepository:ReturnType<AuthInter>)=>{

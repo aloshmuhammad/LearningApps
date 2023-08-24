@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef} from "react";
 import { TextField, Button, Container, Paper } from "@mui/material";
 import { useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
 import styled from "@mui/material/styles/styled";
 import { useParams } from "react-router-dom";
 import instance from "../../Axios/axios";
-
+import moment from 'moment'
 const socketConnection = socketIOClient("http://localhost:3001");
 console.log("Socket initialized:", socketConnection);
 
@@ -37,14 +37,16 @@ const StyledChatBox = styled(Paper)(({ theme }) => ({
   height: "60vh",
   padding: theme.spacing(2),
   overflowY: "scroll",
-  backgroundColor: "white",
+  backgroundColor: "gray",
   color: "black",
 }));
+
 
 const StyledMessageContainer = styled("div")(({ theme, isFromTutor }) => ({
   display: "flex",
   justifyContent: isFromTutor ? "flex-end" : "flex-start",
   marginBottom: "8px",
+  
 }));
 
 const StyledMessageContent = styled("div")(({ theme, isFromTutor }) => ({
@@ -56,14 +58,22 @@ const StyledMessageContent = styled("div")(({ theme, isFromTutor }) => ({
 }));
 
 function TutorChat() {
+  const chatBoxRef=useRef()
+
   const { studId } = useParams();
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const Tutor = useSelector((state) => state.tutorInfo.tutor);
-  const Cid = [studId, Tutor._id].sort().join("-");
+  const Cid = [studId, Tutor._id].sort().join("-");  
+
+
 
   const handleMessageSubmit = () => {
+  
+
+    const messageTime = new Date();
+const formattedMessageTime = moment(messageTime).format('MMMM Do YYYY, h:mm:ss a')
     if (newMessage.trim() === "") return;
     const message = {
       isFrom: Tutor.name,
@@ -71,6 +81,7 @@ function TutorChat() {
       commonId: Cid,
       reciever: studId,
       from: Tutor._id,
+      time:formattedMessageTime
     };
     console.log(message, "op");
 
@@ -94,19 +105,38 @@ function TutorChat() {
 
     socket?.on("recieveMessage", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
+      
     });
   }, [socket]);
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <StyledContainer maxWidth="sm">
-      <StyledChatBox elevation={3}>
+      <StyledChatBox elevation={3} ref={chatBoxRef}>
         {messages.map((message, index) => (
           <StyledMessageContainer
             key={index}
             isFromTutor={message.isFrom === Tutor.name}
           >
             <StyledMessageContent isFromTutor={message.isFrom === Tutor.name}>
-              {message.content}
+            <div style={{
+      fontWeight: "bold",
+      marginBottom: "3px",
+      fontSize:'15px',
+      color: message.isFrom === Tutor.name ? "white" : "black",
+    }}>{message.isFrom}</div>
+  <div>{message.content} <br />
+  <span style={{
+                  fontSize: '12px', // Adjust font size as needed
+                  color: message.isFrom === Tutor.name ? 'lightgray' : 'darkgray', // Set colors for tutor and user
+                }}>
+                  {message.time}
+                </span>
+                </div>
             </StyledMessageContent>
           </StyledMessageContainer>
         ))}
